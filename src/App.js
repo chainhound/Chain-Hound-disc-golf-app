@@ -2,12 +2,12 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 const THEME_NORMAL = {
-  bg: "#0D1F10", surface: "#162B1A", surfaceAlt: "#1E3822",
-  border: "#2A5C34", accent: "#00FF77", accentDim: "#00CC60",
-  accentGlow: "rgba(0,255,119,0.2)", text: "#FFFFFF",
-  textMuted: "#9ECBA8", textDim: "#4A7A55",
-  warning: "#FFD000", error: "#FF4455",
-  cardBg: "#1A3320", headerBg: "#112216",
+  bg: "#FFFFFF", surface: "#F5F5F5", surfaceAlt: "#EEEEEE",
+  border: "#E0E6E2", accent: "#00A651", accentDim: "#007A3D",
+  accentGlow: "rgba(0,166,81,0.1)", text: "#111111",
+  textMuted: "#666666", textDim: "#AAAAAA",
+  warning: "#F5A623", error: "#E53935",
+  cardBg: "#F5F5F5", headerBg: "#FFFFFF",
 };
 const THEME_OUTDOOR = {
   bg: "#000000", surface: "#0D0D0D", surfaceAlt: "#1A1A1A",
@@ -118,6 +118,7 @@ const DISC_DATABASE = [
   {name:"Barbarian",brand:"Viking Discs",type:"distance_driver",speed:12,glide:5,turn:0,fade:3},
   {name:"Berserker",brand:"Viking Discs",type:"distance_driver",speed:14,glide:6,turn:-2,fade:2},
   {name:"Warship",brand:"Viking Discs",type:"distance_driver",speed:11,glide:5,turn:-2,fade:2},
+  {name:"Ragnarok",brand:"Viking Discs",type:"distance_driver",speed:11,glide:5,turn:-1,fade:2},
   // INNOVA Fairway Drivers
   {name:"Leopard",brand:"Innova",type:"fairway_driver",speed:7,glide:5,turn:-2,fade:1},
   {name:"Leopard3",brand:"Innova",type:"fairway_driver",speed:7,glide:5,turn:-2,fade:1},
@@ -137,6 +138,7 @@ const DISC_DATABASE = [
   {name:"Insanity",brand:"Dynamic Discs",type:"fairway_driver",speed:9,glide:5,turn:-2,fade:2},
   {name:"Getaway",brand:"Dynamic Discs",type:"fairway_driver",speed:9,glide:5,turn:-2,fade:1},
   {name:"Freedom",brand:"Dynamic Discs",type:"fairway_driver",speed:9,glide:6,turn:-3,fade:1},
+  {name:"Crave",brand:"Dynamic Discs",type:"fairway_driver",speed:10,glide:6,turn:-2,fade:2},
   // DISC MANIA Fairway Drivers
   {name:"FD",brand:"Disc Mania",type:"fairway_driver",speed:9,glide:6,turn:-3,fade:1},
   {name:"FD2",brand:"Disc Mania",type:"fairway_driver",speed:9,glide:5,turn:-1,fade:2},
@@ -175,6 +177,7 @@ const DISC_DATABASE = [
   // VIKING Midranges
   {name:"Lynx",brand:"Viking Discs",type:"midrange",speed:5,glide:5,turn:-1,fade:2},
   {name:"Wolf",brand:"Viking Discs",type:"midrange",speed:4,glide:4,turn:0,fade:2},
+  {name:"Axe",brand:"Viking Discs",type:"midrange",speed:4,glide:3,turn:0,fade:1},
   // INNOVA Putters
   {name:"Aviar",brand:"Innova",type:"putter",speed:2,glide:3,turn:0,fade:1},
   {name:"Aviar3",brand:"Innova",type:"putter",speed:2,glide:3,turn:0,fade:1},
@@ -199,9 +202,22 @@ const DISC_DATABASE = [
   {name:"Axiom Envy",brand:"Axiom",type:"putter",speed:3,glide:4,turn:-1,fade:1},
   // KASTAPLAST Putters
   {name:"Gote",brand:"Kastaplast",type:"putter",speed:2,glide:3,turn:0,fade:2},
+  // LATITUDE 64 Distance Drivers
+  {name:"Ballista Pro",brand:"Latitude 64",type:"distance_driver",speed:14,glide:6,turn:-1,fade:3},
+  {name:"Flow",brand:"Latitude 64",type:"distance_driver",speed:11,glide:5,turn:-2,fade:2},
+  {name:"Raketen",brand:"Latitude 64",type:"distance_driver",speed:14,glide:5,turn:0,fade:4},
+  // LATITUDE 64 Fairway Drivers
+  {name:"River",brand:"Latitude 64",type:"fairway_driver",speed:9,glide:6,turn:-3,fade:1},
+  {name:"Jade",brand:"Latitude 64",type:"fairway_driver",speed:9,glide:5,turn:-2,fade:2},
+  {name:"Saint Pro",brand:"Latitude 64",type:"fairway_driver",speed:9,glide:6,turn:-1,fade:2},
+  {name:"Compass",brand:"Latitude 64",type:"fairway_driver",speed:7,glide:5,turn:-1,fade:2},
+  // LATITUDE 64 Midranges
+  {name:"Fuse",brand:"Latitude 64",type:"midrange",speed:5,glide:6,turn:-2,fade:1},
+  {name:"Keystone",brand:"Latitude 64",type:"midrange",speed:4,glide:5,turn:-1,fade:2},
   // LATITUDE 64 Putters
   {name:"Pure",brand:"Latitude 64",type:"putter",speed:2,glide:4,turn:0,fade:0},
   {name:"Mercy",brand:"Latitude 64",type:"putter",speed:2,glide:3,turn:0,fade:1},
+  {name:"Royal Pure",brand:"Latitude 64",type:"putter",speed:2,glide:4,turn:0,fade:0},
   // DISC MANIA Putters
   {name:"P1",brand:"Disc Mania",type:"putter",speed:3,glide:3,turn:0,fade:2},
   {name:"P2",brand:"Disc Mania",type:"putter",speed:3,glide:4,turn:-1,fade:1},
@@ -215,7 +231,7 @@ const DISC_DATABASE = [
 // ─── Week 3: Sabo Park Hole Data (field test June 7, 2026) ────────────────────
 const SABO_PARK_HOLES = [
   {
-    number:1, distance:262, par:3, elevation:"flat",
+    number:1, distance:213, par:3, elevation:"flat",
     ob:["road right entire hole","OB cuts left near basket"],
     obstacles:[
       {type:"trees",location:"left of tee",distance:10},
@@ -230,7 +246,7 @@ const SABO_PARK_HOLES = [
     shape:"straight", hazards:"trees_both_sides ob_right",
   },
   {
-    number:2, distance:180, par:3, elevation:"flat",
+    number:2, distance:345, par:3, elevation:"flat",
     ob:[],
     obstacles:[
       {type:"trees",location:"right (heavy)",distance:15},
@@ -245,7 +261,7 @@ const SABO_PARK_HOLES = [
     shape:"straight", hazards:"trees_right tight",
   },
   {
-    number:3, distance:220, par:3, elevation:"flat",
+    number:3, distance:132, par:3, elevation:"flat",
     ob:[],
     obstacles:[
       {type:"2 big trees",location:"left, 10-15ft from tee",distance:12},
@@ -257,11 +273,11 @@ const SABO_PARK_HOLES = [
       {id:"A",label:"Thread right of left trees",description:"Aim right of the two big left trees, avoid skinny basket blocker",throwType:"backhand"},
       {id:"B",label:"Left hyzer approach",description:"Clear left trees high, land left of basket blocker on approach angle",throwType:"backhand"},
     ],
-    notes:"Two big trees left 10-15ft from tee. Tree right of tee 5-10ft. Skinny tree directly in front of basket ~25ft out — must go around it.",
+    notes:"132ft short hole. Two big trees left 10-15ft from tee. Tree right of tee 5-10ft. Skinny tree directly in front of basket ~25ft out. RIGHT SIDE SWAMP — OB right slopes into swamp/poison ivy. Stay left.",
     shape:"straight", hazards:"trees_both_sides",
   },
   {
-    number:4, distance:262, par:3, elevation:"uphill",
+    number:4, distance:241, par:3, elevation:"uphill",
     ob:["OB right"],
     obstacles:[
       {type:"tree line",location:"left fairway",distance:0},
@@ -306,7 +322,7 @@ const SABO_PARK_HOLES = [
       {id:"B",label:"Right of oak (tight)",description:"Forehand right of oak, need controlled curve back to basket right",throwType:"forehand"},
       {id:"C",label:"High over oak",description:"Understable disc on anhyzer, get height over oak, ride fade down",throwType:"backhand"},
     ],
-    notes:"294ft par 3. BIG OAK dead center of fairway ~130ft out. Must go around or over it. Scattered trees. Basket right.",
+    notes:"294ft par 3. BIG OAK dead center ~130ft out — must go around or over. BARBED WIRE CHAIN LINK FENCE behind basket — high shots go behind fence OB. Scattered trees. Basket right.",
     shape:"straight", hazards:"trees_both_sides",
   },
 ];
@@ -1182,12 +1198,8 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
     });
   }, [hole, bag, settings, remainingDist, wind, lastShot, holeShots]);
 
-  // Auto-fire when entering caddy phase
-  useEffect(() => {
-    if (phase === "caddy" && !isSwapping.current && !rec && !recLoading) {
-      fireRecommendation();
-    }
-  }, [phase, round.currentHole]);
+  // Week 5: No auto-fire — player sets wind first, then taps Ask My Caddie
+  // useEffect removed intentionally — caddy button triggers recommendation
 
   // Reset on new hole
   useEffect(() => {
@@ -1865,7 +1877,7 @@ function SettingsScreen({bag,setBag,settings,setSettings}) {
         <div style={{marginBottom:"24px"}}><div style={s.slabel}>Driver Distance</div><div style={s.card}><div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>{[{key:"under200",label:"Under 200ft"},{key:"200to300",label:"200–300ft"},{key:"300to400",label:"300–400ft"},{key:"over400",label:"400ft+"}].map(opt=>(<div key={opt.key} onClick={()=>updateSetting("driverDistance",opt.key)} style={{flex:"1 0 calc(50% - 4px)",padding:"12px 8px",textAlign:"center",background:settings?.driverDistance===opt.key?theme.accentGlow:theme.surfaceAlt,border:`1px solid ${settings?.driverDistance===opt.key?theme.accentDim:theme.border}`,borderRadius:"10px",cursor:"pointer",fontSize:"11px",color:settings?.driverDistance===opt.key?theme.accent:theme.textMuted,fontFamily:"'DM Mono',monospace"}}>{opt.label}</div>))}</div></div></div>
         <div style={{marginBottom:"24px"}}><div style={s.slabel}>Outdoor Mode</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div><div style={{fontSize:"13px",color:theme.text,fontWeight:"600"}}>High Contrast</div><div style={{fontSize:"11px",color:theme.textMuted,marginTop:"2px"}}>Maximum contrast for sunlight.</div></div><div onClick={()=>updateSetting("outdoorMode",!settings.outdoorMode)} style={{width:"52px",height:"28px",borderRadius:"14px",cursor:"pointer",background:settings.outdoorMode?theme.accent:theme.surfaceAlt,border:`1px solid ${settings.outdoorMode?theme.accentDim:theme.border}`,position:"relative",transition:"all 0.2s",flexShrink:0}}><div style={{position:"absolute",top:"3px",left:settings.outdoorMode?"26px":"3px",width:"20px",height:"20px",borderRadius:"50%",background:settings.outdoorMode?theme.bg:"#555",transition:"left 0.2s"}}/></div></div></div></div>
         <div style={{marginBottom:"24px"}}><div style={s.slabel}>Data</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div style={{display:"flex",alignItems:"center",gap:"10px"}}><span>🎒</span><span style={{fontSize:"12px",color:theme.textMuted}}>Discs in bag</span></div><span style={{fontSize:"13px",color:theme.accent,fontWeight:"700"}}>{bag.length}</span></div></div><button style={s.btnDanger} onClick={clearAll}>🗑️ Clear All Data</button></div>
-        <div style={{...s.card,textAlign:"center"}}><div style={{fontSize:"11px",color:theme.textDim,lineHeight:1.8}}>Chain Hound 🐕⛓️<br/>Weeks 3 & 4 · June 2026<br/>Hole data model + one-tap caddy 🐕</div></div>
+        <div style={{...s.card,textAlign:"center"}}><div style={{fontSize:"11px",color:theme.textDim,lineHeight:1.8}}>Chain Hound 🐕⛓️<br/>Week 5 · June 2026<br/>Light theme · proxy · rec fix · wind before caddy</div></div>
       </div>
     </div>
   );
