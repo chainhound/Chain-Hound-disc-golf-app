@@ -819,6 +819,14 @@ PLAYER: ${dominantHand} · ${settings?.skillLevel || "intermediate"} · ${settin
 RECENT SHOTS:
 ${lastShotsDesc}
 
+CRITICAL DISTANCE RULES — MUST FOLLOW:
+- Under 30ft: putter only, say "just putt it"
+- 30-120ft: ONLY recommend putters or midranges
+- 120-200ft: ONLY recommend midranges or fairway drivers
+- 200ft+: any disc appropriate for the shot
+- NEVER recommend a distance driver or fairway driver for shots under 200ft
+- ONLY recommend discs from the bag list below — never suggest a disc not in the bag
+
 BAG (choose ONLY from these):
 ${bagDesc}
 
@@ -826,20 +834,37 @@ Respond ONLY with this JSON — no other text:
 {"disc":"exact disc name from bag","throwType":"Backhand or Forehand or Roller","releaseAngle":"Flat or Hyzer or Anhyzer","shotLine":"A or B or C or null","reason":"1-2 plain English sentences including which shot line and why","confidence":"high or medium or low","alternative":"second best disc name","puttingTip":"only if under 60ft"}`;
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/.netlify/functions/claude-proxy", {
         method: "POST",
-        headers: { "content-type": "application/json", "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 300, messages: [{ role: "user", content: prompt }] })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: prompt }],
+          system: "You are Chain Hound, an expert disc golf caddy. Respond ONLY with valid JSON. No preamble, no markdown, no explanation."
+        })
       });
-      if (!response.ok) throw new Error(`API ${response.status}`);
+      if (!response.ok) throw new Error(`Proxy ${response.status}`);
       const data = await response.json();
-      if (data.error) throw new Error(data.error.message);
+      if (data.error) throw new Error(data.error.message || "Proxy error");
       const text = (data.content || []).find(b => b.type === "text")?.text || "";
       const a = text.indexOf("{"), b2 = text.lastIndexOf("}");
       if (a === -1 || b2 === -1) throw new Error("No JSON");
       const result = JSON.parse(text.slice(a, b2 + 1));
       const discInBag = bag.find(d => d.name.toLowerCase() === result.disc?.toLowerCase());
       if (!discInBag) { result.disc = bag[0]?.name; result.confidence = "low"; result.reason = "(Disc not in bag — defaulting.) " + result.reason; }
+      // Enforce distance rules even on AI response — catch any regression
+      if (remainingDist < 200) {
+        const recommended = bag.find(d => d.name === result.disc);
+        if (recommended && (recommended.type === "distance_driver" || recommended.type === "fairway_driver") && remainingDist < 200) {
+          const betterDisc = remainingDist <= 120
+            ? bag.find(d => d.type === "putter") || bag.find(d => d.type === "midrange")
+            : bag.find(d => d.type === "midrange") || bag.find(d => d.type === "fairway_driver");
+          if (betterDisc) {
+            result.disc = betterDisc.name;
+            result.confidence = "medium";
+            result.reason = `${remainingDist}ft — ${betterDisc.name} is the right choice for this distance. ` + result.reason;
+          }
+        }
+      }
       setRec(result);
     } catch (err) {
       // ── Smart offline fallback using Week 3 hole data ─────────────────────
@@ -870,10 +895,17 @@ Respond ONLY with this JSON — no other text:
         fallbackThrow = "Backhand"; releaseAngle = "Flat";
         fallbackReason = `${remainingDist}ft — smooth putt. Aim center chains.`;
         shotLine = null;
-      } else if (remainingDist <= 150) {
-        fallbackDisc = bag.find(d => d.type === "putter") || bag.find(d => d.type === "midrange") || bag[0];
+      } else if (remainingDist <= 120) {
+        // Short — putter only
+        fallbackDisc = bag.find(d => d.type === "putter") || bag[0];
         fallbackThrow = "Backhand"; releaseAngle = "Flat";
-        fallbackReason = `${remainingDist}ft — putter/mid range. ${defaultLine ? `Shot line ${defaultLine.id}: ${defaultLine.label}.` : ""}`;
+        fallbackReason = `${remainingDist}ft — putter distance. ${defaultLine ? `Shot line ${defaultLine.id}: ${defaultLine.label}.` : "Smooth flat release."}`;
+        shotLine = defaultLine?.id || null;
+      } else if (remainingDist <= 200) {
+        // Medium — midrange only, never a driver
+        fallbackDisc = bag.find(d => d.type === "midrange") || bag.find(d => d.type === "putter") || bag[0];
+        fallbackThrow = "Backhand"; releaseAngle = "Flat";
+        fallbackReason = `${remainingDist}ft — midrange distance. ${defaultLine ? `Shot line ${defaultLine.id}: ${defaultLine.label}.` : "Controlled flat release."}`;
         shotLine = defaultLine?.id || null;
       } else if (hasTrees || (hasLeft && hasRight)) {
         fallbackDisc = bag.find(d => { const s=getStability(d.turn,d.fade); return s.label==="Neutral"&&(d.type==="midrange"||d.type==="fairway_driver"); }) || bag.find(d=>d.type==="midrange") || bag[0];
@@ -1100,6 +1132,13 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
 // ─── Week 4: Active Round Hole Screen ─────────────────────────────────────────
 // Key change: One-tap caddy button is the FIRST thing on screen.
 // Wind defaults to "none" — no picker friction. Player just taps the button.
+
+const WIND_OPTIONS=[
+  {key:"none",label:"No Wind",icon:"😶"},{key:"headwind",label:"Headwind",icon:"🌬️⬆️"},
+  {key:"tailwind",label:"Tailwind",icon:"🌬️⬇️"},{key:"crosswind_left",label:"Cross Left",icon:"🌬️⬅️"},
+  {key:"crosswind_right",label:"Cross Right",icon:"🌬️➡️"},
+];
+
 function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settings, onEndRound }) {
   // Merge Week 3 hole detail data with course hole metadata
   const holeData = loadHoleData();
@@ -1323,16 +1362,32 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
         </div>
       )}
 
-      {/* ── Week 4: ONE-TAP CADDY BUTTON — the whole point ── */}
+      {/* ── Week 5: WIND FIRST, THEN CADDY BUTTON ── */}
       {phase === "caddy" && !rec && !recLoading && (
         <div style={{ marginBottom:"16px" }}>
+          <div style={{ ...s.card, marginBottom:"12px", padding:"14px 16px" }}>
+            <div style={{ ...s.slabel, marginBottom:"10px" }}>Wind Conditions</div>
+            <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
+              {WIND_OPTIONS.map(w => (
+                <div key={w.key} onClick={() => setWind(w.key)}
+                  style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center",
+                    background:wind===w.key?theme.accentGlow:theme.surfaceAlt,
+                    border:`1px solid ${wind===w.key?theme.accentDim:theme.border}`,
+                    borderRadius:"8px", cursor:"pointer", fontSize:"10px",
+                    color:wind===w.key?theme.accent:theme.textMuted }}>
+                  <div style={{fontSize:"14px"}}>{w.icon}</div>
+                  <div style={{marginTop:"2px"}}>{w.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
           <button
             onClick={() => fireRecommendation()}
             style={{ ...s.btn, fontSize:"18px", padding:"20px", borderRadius:"16px", letterSpacing:"0.08em", display:"flex", alignItems:"center", justifyContent:"center", gap:"10px" }}
           >
-            🐕 GET CADDY REC
+            🐕 ASK MY CADDIE
           </button>
-          <div style={{ textAlign:"center", fontSize:"11px", color:theme.textDim, marginTop:"8px" }}>One tap — instant advice</div>
+          <div style={{ textAlign:"center", fontSize:"11px", color:theme.textDim, marginTop:"8px" }}>Set wind above, then tap for instant advice</div>
         </div>
       )}
 
