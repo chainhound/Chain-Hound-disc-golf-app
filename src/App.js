@@ -34,22 +34,22 @@ const getTheme = (outdoor) => outdoor ? THEME_OUTDOOR : THEME_NORMAL;
 let theme = THEME_NORMAL;
 
 const s = {
-  app: { background: theme.bg, minHeight: "100vh", maxWidth: "430px", margin: "0 auto", display: "flex", flexDirection: "column", fontFamily: "'DM Mono','Courier New',monospace", color: theme.text },
+  app: { background: "#FFFFFF", minHeight: "100vh", maxWidth: "430px", margin: "0 auto", display: "flex", flexDirection: "column", fontFamily: "'DM Mono','Courier New',monospace", color: "#111111" },
   header: { padding: "52px 24px 16px", borderBottom: "1px solid #E0E0E0", background: "#FFFFFF", position: "relative" },
   htitle: { fontSize: "11px", letterSpacing: "0.25em", color: theme.accent, textTransform: "uppercase", marginBottom: "4px", fontWeight: "500" },
   hmain: { fontSize: "26px", fontWeight: "700", color: theme.text, letterSpacing: "-0.02em", fontFamily: "'DM Sans',sans-serif" },
   content: { flex: 1, overflowY: "auto", padding: "24px", paddingBottom: "100px" },
-  card: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: "16px", padding: "20px", marginBottom: "16px" },
-  cardAccent: { background: theme.accentGlow, border: `1px solid ${theme.accentDim}`, borderRadius: "16px", padding: "20px", marginBottom: "16px" },
-  slabel: { fontSize: "10px", letterSpacing: "0.2em", color: theme.textMuted, textTransform: "uppercase", marginBottom: "12px", fontWeight: "500" },
-  btn: { background: theme.accent, color: theme.bg, border: "none", borderRadius: "12px", padding: "14px 24px", fontSize: "13px", fontWeight: "700", letterSpacing: "0.05em", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
-  btnOut: { background: "transparent", color: theme.accent, border: `1px solid ${theme.accentDim}`, borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
-  btnDanger: { background: "transparent", color: theme.error, border: `1px solid rgba(255,77,77,0.3)`, borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
-  input: { background: theme.surfaceAlt, border: `1px solid ${theme.border}`, borderRadius: "10px", padding: "12px 14px", fontSize: "13px", color: theme.text, width: "100%", fontFamily: "'DM Mono',monospace", outline: "none", boxSizing: "border-box" },
-  label: { fontSize: "10px", letterSpacing: "0.15em", color: theme.textMuted, textTransform: "uppercase", marginBottom: "6px", display: "block", fontWeight: "500" },
-  row: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${theme.border}` },
+  card: { background: "#00A651", border: "1px solid #007A3D", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
+  cardAccent: { background: "#007A3D", border: "1px solid #005C2E", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
+  slabel: { fontSize: "10px", letterSpacing: "0.2em", color: "#FFFFFF", textTransform: "uppercase", marginBottom: "12px", fontWeight: "500" },
+  btn: { background: "#00A651", color: "#FFFFFF", border: "none", borderRadius: "12px", padding: "14px 24px", fontSize: "13px", fontWeight: "700", letterSpacing: "0.05em", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
+  btnOut: { background: "transparent", color: "#00A651", border: "1px solid #00A651", borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
+  btnDanger: { background: "transparent", color: "#E53935", border: "1px solid rgba(229,57,53,0.4)", borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
+  input: { background: "#F5F5F5", border: "1px solid #CCCCCC", borderRadius: "10px", padding: "12px 14px", fontSize: "13px", color: "#111111", width: "100%", fontFamily: "'DM Mono',monospace", outline: "none", boxSizing: "border-box" },
+  label: { fontSize: "10px", letterSpacing: "0.15em", color: "#FFFFFF", textTransform: "uppercase", marginBottom: "6px", display: "block", fontWeight: "500" },
+  row: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.2)" },
   tag: { display: "inline-block", background: theme.surfaceAlt, border: `1px solid ${theme.border}`, borderRadius: "6px", padding: "3px 10px", fontSize: "11px", color: theme.textMuted },
-  nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: "430px", background: theme.surface, borderTop: `1px solid ${theme.border}`, display: "flex", padding: "12px 0 24px", zIndex: 100 },
+  nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: "430px", background: "#FFFFFF", borderTop: "1px solid #E0E0E0", display: "flex", padding: "12px 0 24px", zIndex: 100 },
   navItem: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", cursor: "pointer", padding: "4px 0" },
 };
 
@@ -485,7 +485,7 @@ function HoleDiagram({ hole, shots = [] }) {
   return (
     <div style={{ width: "100%", overflowX: "hidden" }}>
       <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }}>
-        <rect width={W} height={H} fill={theme.surfaceAlt} rx="10"/>
+        <rect width={W} height={H} fill="#F0F0F0" rx="10"/>
         {treesTop && (<><rect x={tee.x} y={0} width={basket.x - tee.x} height={H*0.24} fill="rgba(20,70,20,0.65)" rx="4"/><text x={tee.x+6} y={15} fontSize="10" fill="#6ABF6A">🌲</text></>)}
         {treesBottom && (<><rect x={tee.x} y={H*0.76} width={basket.x - tee.x} height={H*0.24} fill="rgba(20,70,20,0.65)" rx="4"/><text x={tee.x+6} y={H-3} fontSize="10" fill="#6ABF6A">🌲</text></>)}
         {obTop && (<><rect x={tee.x} y={0} width={basket.x - tee.x} height={H*0.18} fill={isWater ? "rgba(30,100,200,0.4)" : "rgba(220,60,60,0.35)"} rx="4"/><text x={tee.x+6} y={14} fontSize="9" fill={isWater ? "#60BFFF" : "#FF8888"}>{isWater ? "💧 OB" : "⚠️ OB"}</text></>)}
@@ -1508,7 +1508,7 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               const sc = round.scores?.[h.number];
               const diff = sc ? sc - h.par : null;
               return (
-                <div key={h.number} onClick={()=>{const updated={...round,currentHole:h.number};setRound(updated);saveActiveRound(updated);}} style={{ width:"44px",height:"44px",background:h.number===round.currentHole?theme.accentGlow:sc?(diff<0?"rgba(61,255,122,0.15)":diff===0?"rgba(255,184,48,0.15)":"rgba(255,77,77,0.1)"):theme.surfaceAlt, border:`1px solid ${h.number===round.currentHole?theme.accentDim:sc?(diff<0?theme.accentDim:diff===0?"#5C4A00":"rgba(255,77,77,0.3)"):theme.border}`, borderRadius:"10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer" }}>
+                <div key={h.number} onClick={()=>{const updated={...round,currentHole:h.number};setRound(updated);saveActiveRound(updated);}} style={{ width:"44px",height:"44px",background:h.number===round.currentHole?"#00A651":sc?(diff<0?"rgba(0,166,81,0.2)":diff===0?"rgba(245,166,35,0.2)":"rgba(229,57,53,0.15)"):"#F0F0F0", border:`1px solid ${h.number===round.currentHole?theme.accentDim:sc?(diff<0?theme.accentDim:diff===0?"#5C4A00":"rgba(255,77,77,0.3)"):theme.border}`, borderRadius:"10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer" }}>
                   <div style={{fontSize:"11px",color:theme.textMuted}}>{h.number}</div>
                   <div style={{fontSize:"13px",fontWeight:"700",color:sc?(diff<0?theme.accent:diff===0?theme.warning:theme.error):theme.textDim}}>{sc||"·"}</div>
                 </div>
@@ -1913,8 +1913,8 @@ export default function App() {
   const t = getTheme(settings.outdoorMode);
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;600;700&display=swap');*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}body{background:${t.bg};}::-webkit-scrollbar{width:0;}input::placeholder{color:${t.textDim};}select option{background:${t.surface};}`}</style>
-      <div style={{...s.app,background:t.bg,color:t.text,fontFamily:"'DM Mono','Courier New',monospace"}}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;600;700&display=swap');*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}body{background:#FFFFFF;}::-webkit-scrollbar{width:0;}input::placeholder{color:${t.textDim};}select option{background:${t.surface};}`}</style>
+      <div style={{...s.app,background:"#FFFFFF",color:"#111111",fontFamily:"'DM Mono','Courier New',monospace"}}>
         <div style={{flex:1,overflowY:"auto"}}>
           {tab==="home"&&<HomeScreen setTab={setTab} bag={bag} settings={settings}/>}
           {tab==="bag"&&<BagScreen bag={bag} setBag={setBag}/>}
