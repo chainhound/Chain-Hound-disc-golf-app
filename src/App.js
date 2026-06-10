@@ -36,8 +36,8 @@ let theme = THEME_NORMAL;
 const s = {
   app: { background: "#FFFFFF", minHeight: "100vh", maxWidth: "430px", margin: "0 auto", display: "flex", flexDirection: "column", fontFamily: "'DM Mono','Courier New',monospace", color: "#111111" },
   header: { padding: "52px 24px 16px", borderBottom: "1px solid #E0E0E0", background: "#FFFFFF", position: "relative" },
-  htitle: { fontSize: "11px", letterSpacing: "0.25em", color: theme.accent, textTransform: "uppercase", marginBottom: "4px", fontWeight: "500" },
-  hmain: { fontSize: "26px", fontWeight: "700", color: theme.text, letterSpacing: "-0.02em", fontFamily: "'DM Sans',sans-serif" },
+  htitle: { fontSize: "11px", letterSpacing: "0.25em", color: "#00A651", textTransform: "uppercase", marginBottom: "4px", fontWeight: "500" },
+  hmain: { fontSize: "26px", fontWeight: "700", color: "#111111", letterSpacing: "-0.02em", fontFamily: "'DM Sans',sans-serif" },
   content: { flex: 1, overflowY: "auto", padding: "24px", paddingBottom: "100px" },
   card: { background: "#00A651", border: "1px solid #007A3D", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
   cardAccent: { background: "#007A3D", border: "1px solid #005C2E", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
@@ -737,7 +737,7 @@ function DiscPicker({ bag, selected, onSelect, onCancel }) {
   const byType = DISC_TYPES.map(t => ({ ...t, discs: bag.filter(d => d.type === t.key) }));
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", zIndex: 200, display: "flex", alignItems: "flex-end" }}>
-      <div style={{ background: theme.surface, borderRadius: "20px 20px 0 0", width: "100%", maxWidth: "430px", margin: "0 auto", padding: "24px", maxHeight: "70vh", overflowY: "auto" }}>
+      <div style={{ background: "#FFFFFF", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: "430px", margin: "0 auto", padding: "24px", maxHeight: "70vh", overflowY: "auto" }}>
         <div style={{ ...s.slabel, marginBottom: "16px" }}>Choose a Different Disc</div>
         {byType.map(type => type.discs.length > 0 && (
           <div key={type.key} style={{ marginBottom: "12px" }}>
@@ -746,8 +746,8 @@ function DiscPicker({ bag, selected, onSelect, onCancel }) {
               const stab = getStability(disc.turn, disc.fade);
               const isSelected = selected?.id === disc.id;
               return (
-                <div key={disc.id} onClick={() => onSelect(disc)} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",marginBottom:"6px",background:isSelected?theme.accentGlow:theme.surfaceAlt,border:`1px solid ${isSelected?theme.accentDim:theme.border}`,borderRadius:"10px",cursor:"pointer" }}>
-                  <div><div style={{fontSize:"13px",fontWeight:"700",color:theme.text}}>{disc.name}</div><div style={{fontSize:"11px",color:theme.textMuted}}>{disc.brand} · {disc.speed}/{disc.glide}/{disc.turn}/{disc.fade}</div></div>
+                <div key={disc.id} onClick={() => onSelect(disc)} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",marginBottom:"6px",background:isSelected?"#E8F5EE":"#FFFFFF",border:`1px solid ${isSelected?"#00A651":"#CCCCCC"}`,borderRadius:"10px",cursor:"pointer" }}>
+                  <div><div style={{fontSize:"13px",fontWeight:"700",color:"#111111"}}>{disc.name}</div><div style={{fontSize:"11px",color:"#666666"}}>{disc.brand} · {disc.speed}/{disc.glide}/{disc.turn}/{disc.fade}</div></div>
                   <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px"}}>{stab.label}</span>
                 </div>
               );
@@ -989,18 +989,18 @@ const RELEASE_INFO = {
 function InfoPopup({ title, lines, onClose }) {
   return (
     <div style={{ position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"flex-end",justifyContent:"center" }} onClick={onClose}>
-      <div style={{ background:"#1A3320",border:"2px solid #00CC60",borderRadius:"20px 20px 0 0",padding:"24px",width:"100%",maxWidth:"430px" }} onClick={e=>e.stopPropagation()}>
+      <div style={{ background:"#FFFFFF",border:"2px solid #00A651",borderRadius:"20px 20px 0 0",padding:"24px",width:"100%",maxWidth:"430px" }} onClick={e=>e.stopPropagation()}>
         <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"20px" }}>
-          <div style={{ fontSize:"20px",fontWeight:"800",color:"#00FF77",fontFamily:"'DM Sans',sans-serif" }}>{title}</div>
+          <div style={{ fontSize:"20px",fontWeight:"800",color:"#00A651",fontFamily:"'DM Sans',sans-serif" }}>{title}</div>
           <div onClick={onClose} style={{ fontSize:"20px",color:"#4A7A55",cursor:"pointer",padding:"4px 8px" }}>✕</div>
         </div>
         {lines.map((line,i) => (
-          <div key={i} style={{ marginBottom:"14px",padding:"10px 14px",background:"#162B1A",borderRadius:"10px" }}>
-            <div style={{ fontSize:"10px",color:"#9ECBA8",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"4px",fontWeight:"600" }}>{line.label}</div>
-            <div style={{ fontSize:"14px",color:"#FFFFFF",lineHeight:1.6 }}>{line.text}</div>
+          <div key={i} style={{ marginBottom:"14px",padding:"10px 14px",background:"#E8F5EE",borderRadius:"10px",border:"1px solid #00A651" }}>
+            <div style={{ fontSize:"10px",color:"#007A3D",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"4px",fontWeight:"600" }}>{line.label}</div>
+            <div style={{ fontSize:"14px",color:"#111111",lineHeight:1.6 }}>{line.text}</div>
           </div>
         ))}
-        <button onClick={onClose} style={{ width:"100%",padding:"14px",background:"#00FF77",color:"#000",border:"none",borderRadius:"12px",fontSize:"14px",fontWeight:"700",cursor:"pointer" }}>Got It ✓</button>
+        <button onClick={onClose} style={{ width:"100%",padding:"14px",background:"#00A651",color:"#FFFFFF",border:"none",borderRadius:"12px",fontSize:"14px",fontWeight:"700",cursor:"pointer" }}>Got It ✓</button>
       </div>
     </div>
   );
@@ -1095,10 +1095,10 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
                 <div style={{ fontSize:"14px",fontWeight:"700",color:"#FFFFFF" }}>{displayThrow}</div>
               </div>
               {rec.releaseAngle && (
-                <div onClick={()=>setReleasePopup(rec.releaseAngle)} style={{ flex:1,background:"#162B1A",border:`1px solid ${releaseInfo.border}`,borderRadius:"10px",padding:"10px 12px",cursor:"pointer",position:"relative" }}>
+                <div onClick={()=>setReleasePopup(rec.releaseAngle)} style={{ flex:1,background:"#005C2E",border:"1px solid #003D1E",borderRadius:"10px",padding:"10px 12px",cursor:"pointer",position:"relative" }}>
                   <div style={{ position:"absolute",top:"8px",right:"8px",width:"18px",height:"18px",borderRadius:"50%",background:`${releaseInfo.color}22`,border:`1px solid ${releaseInfo.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",color:releaseInfo.color,fontWeight:"700" }}>?</div>
                   <div style={{ fontSize:"20px",marginBottom:"4px" }}>{releaseInfo.icon}</div>
-                  <div style={{ fontSize:"14px",fontWeight:"700",color:releaseInfo.color }}>{rec.releaseAngle}</div>
+                  <div style={{ fontSize:"14px",fontWeight:"700",color:"#FFFFFF" }}>{rec.releaseAngle}</div>
                 </div>
               )}
             </div>
@@ -1126,7 +1126,7 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
                 const active = displayThrow === tt;
                 return (
                   <div key={tt} style={{ display:"flex",alignItems:"center",gap:"4px" }}>
-                    <div onClick={()=>handleThrowChange(tt)} style={{ padding:"8px 12px",background:active?"#00FF77":"transparent",border:`2px solid ${active?"#00FF77":"#2A5C34"}`,borderRadius:"8px",cursor:"pointer",fontSize:"12px",fontWeight:"700",color:active?"#000":"#9ECBA8",display:"flex",alignItems:"center",gap:"4px" }}>
+                    <div onClick={()=>handleThrowChange(tt)} style={{ padding:"8px 12px",background:active?"#005C2E":"#00C875",border:"2px solid #007A3D",borderRadius:"8px",cursor:"pointer",fontSize:"12px",fontWeight:"700",color:"#FFFFFF",display:"flex",alignItems:"center",gap:"4px" }}>
                       <span>{THROW_INFO[tt]?.icon}</span>{tt}
                     </div>
                     <div onClick={()=>setThrowPopup(tt)} style={{ width:"20px",height:"20px",borderRadius:"50%",background:"rgba(0,255,119,0.15)",border:"1px solid #2A5C34",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",color:"#9ECBA8",cursor:"pointer",fontWeight:"700",flexShrink:0 }}>?</div>
@@ -1140,7 +1140,7 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
 
           {onFeedback && (
             <div style={{ display:"flex",gap:"8px",marginBottom:"14px",alignItems:"center" }}>
-              <span style={{ fontSize:"11px",color:"#9ECBA8" }}>Helpful?</span>
+              <span style={{ fontSize:"11px",color:"#111111",fontWeight:"600" }}>Helpful?</span>
               <button onClick={()=>onFeedback("good")} style={{ background:"rgba(0,255,119,0.15)",border:"1px solid #00CC60",borderRadius:"8px",padding:"6px 14px",fontSize:"16px",cursor:"pointer" }}>👍</button>
               <button onClick={()=>onFeedback("bad")} style={{ background:"rgba(255,77,77,0.1)",border:"1px solid rgba(255,77,77,0.3)",borderRadius:"8px",padding:"6px 14px",fontSize:"16px",cursor:"pointer" }}>👎</button>
             </div>
@@ -1374,13 +1374,13 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               const colors = ["#185FA5","#D85A30","#3B6D11"];
               const c = colors[i % colors.length];
               return (
-                <div key={sl.id} style={{ flex:"1 0 calc(50% - 4px)", padding:"10px 12px", background:`${c}18`, border:`1px solid ${c}44`, borderRadius:"10px" }}>
+                <div key={sl.id} style={{ flex:"1 0 calc(50% - 4px)", padding:"10px 12px", background:"#005C2E", border:"2px solid #003D1E", borderRadius:"10px" }}>
                   <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px" }}>
                     <div style={{ width:"20px",height:"20px",borderRadius:"50%",background:c,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",fontWeight:"700",flexShrink:0 }}>{sl.id}</div>
-                    <span style={{ fontSize:"12px",fontWeight:"600",color:theme.text }}>{sl.label}</span>
+                    <span style={{ fontSize:"12px",fontWeight:"600",color:"#FFFFFF" }}>{sl.label}</span>
                   </div>
-                  <div style={{ fontSize:"11px",color:theme.textMuted,lineHeight:1.4 }}>{sl.description}</div>
-                  <div style={{ fontSize:"10px",color:c,marginTop:"4px",fontWeight:"600" }}>{sl.throwType}</div>
+                  <div style={{ fontSize:"11px",color:"rgba(255,255,255,0.85)",lineHeight:1.4 }}>{sl.description}</div>
+                  <div style={{ fontSize:"10px",color:"#00C875",marginTop:"4px",fontWeight:"600" }}>{sl.throwType}</div>
                 </div>
               );
             })}
@@ -1397,10 +1397,10 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               {WIND_OPTIONS.map(w => (
                 <div key={w.key} onClick={() => setWind(w.key)}
                   style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center",
-                    background:wind===w.key?theme.accentGlow:theme.surfaceAlt,
-                    border:`1px solid ${wind===w.key?theme.accentDim:theme.border}`,
+                    background:wind===w.key?"#005C2E":"#00C875",
+                    border:"1px solid #007A3D",
                     borderRadius:"8px", cursor:"pointer", fontSize:"10px",
-                    color:wind===w.key?theme.accent:theme.textMuted }}>
+                    color:"#FFFFFF" }}>
                   <div style={{fontSize:"14px"}}>{w.icon}</div>
                   <div style={{marginTop:"2px"}}>{w.label}</div>
                 </div>
@@ -1446,7 +1446,7 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
           <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
             {WIND_OPTIONS.map(w => (
               <div key={w.key} onClick={() => { setWind(w.key); setRec(null); setTimeout(()=>getRecommendation({hole,bag,settings,remainingDist,wind:w.key,lie:lastShot?lastShot.lie:"tee",lastShots:holeShots,position:lastShot?lastShot.position:"center"}),50); }}
-                style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center", background:wind===w.key?"#00A651":"#F5F5F5", border:`1px solid ${wind===w.key?"#007A3D":"#00A651"}`, borderRadius:"8px", cursor:"pointer", fontSize:"10px", color:wind===w.key?"#FFFFFF":"#007A3D" }}>
+                style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center", background:wind===w.key?"#005C2E":"#00C875", border:"1px solid #007A3D", borderRadius:"8px", cursor:"pointer", fontSize:"10px", color:"#FFFFFF" }}>
                 <div style={{fontSize:"14px"}}>{w.icon}</div>
                 <div style={{marginTop:"2px"}}>{w.label}</div>
               </div>
@@ -1482,9 +1482,9 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
           <div style={s.slabel}>Where did it land?</div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px" }}>
             {LIE_OPTIONS.map(lie => (
-              <div key={lie.key} onClick={()=>logShot(pendingShot, lie.key)} style={{ padding:"14px 8px", textAlign:"center", background:theme.surfaceAlt, border:`1px solid ${theme.border}`, borderRadius:"12px", cursor:"pointer", minHeight:"64px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px" }}>
+              <div key={lie.key} onClick={()=>logShot(pendingShot, lie.key)} style={{ padding:"14px 8px", textAlign:"center", background:"#00C875", border:"1px solid #007A3D", borderRadius:"12px", cursor:"pointer", minHeight:"64px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px" }}>
                 <div style={{fontSize:"20px"}}>{lie.icon}</div>
-                <div style={{fontSize:"10px",color:theme.textMuted,letterSpacing:"0.05em"}}>{lie.label}</div>
+                <div style={{fontSize:"10px",color:"#FFFFFF",letterSpacing:"0.05em"}}>{lie.label}</div>
               </div>
             ))}
           </div>
@@ -1783,16 +1783,16 @@ function DiscCard({disc,onDelete}) {
   const t=DISC_TYPES.find(t=>t.key===disc.type);
   const stab=getStability(disc.turn,disc.fade);
   return (
-    <div style={{background:theme.surface,border:`1px solid ${theme.border}`,borderRadius:"14px",marginBottom:"12px",overflow:"hidden"}}>
+    <div style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"14px",marginBottom:"12px",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,166,81,0.1)"}}>
       <div style={{padding:"16px",cursor:"pointer",display:"flex",alignItems:"center",gap:"12px"}} onClick={()=>setExp(!exp)}>
-        <div style={{width:"42px",height:"42px",background:theme.surfaceAlt,border:`1px solid ${theme.border}`,borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",flexShrink:0}}>{t?.icon}</div>
-        <div style={{flex:1}}><div style={{fontSize:"14px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif"}}>{disc.name}</div><div style={{fontSize:"11px",color:theme.textMuted,marginTop:"2px"}}>{disc.brand} · {disc.plastic||t?.label}</div></div>
+        <div style={{width:"42px",height:"42px",background:"#E8F5EE",border:"1px solid #00A651",borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",flexShrink:0}}>{t?.icon}</div>
+        <div style={{flex:1}}><div style={{fontSize:"14px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#111111"}}>{disc.name}</div><div style={{fontSize:"11px",color:"#666666",marginTop:"2px"}}>{disc.brand} · {disc.plastic||t?.label}</div></div>
         <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
           <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px",fontWeight:"600"}}>{stab.label}</span>
-          <div style={{color:theme.textDim}}>{exp?"▲":"▼"}</div>
+          <div style={{color:"#00A651"}}>{exp?"▲":"▼"}</div>
         </div>
       </div>
-      {exp&&(<div style={{padding:"0 16px 16px",borderTop:`1px solid ${theme.border}`}}><div style={{paddingTop:"16px"}}><FlightBar label="Speed" value={disc.speed} min={1} max={14}/><FlightBar label="Glide" value={disc.glide} min={1} max={7} color="#60BFFF"/><FlightBar label="Turn" value={disc.turn} min={-5} max={1} color={disc.turn<0?theme.warning:theme.accent}/><FlightBar label="Fade" value={disc.fade} min={0} max={5} color="#FF7A3D"/></div>{disc.notes&&<div style={{background:theme.surfaceAlt,borderRadius:"8px",padding:"10px 12px",fontSize:"12px",color:theme.textMuted,marginTop:"8px"}}>{disc.notes}</div>}<button style={{...s.btnDanger,padding:"10px",marginTop:"12px"}} onClick={()=>onDelete(disc.id)}>Remove</button></div>)}
+      {exp&&(<div style={{padding:"0 16px 16px",borderTop:"1px solid #E0E0E0"}}><div style={{paddingTop:"16px"}}><FlightBar label="Speed" value={disc.speed} min={1} max={14}/><FlightBar label="Glide" value={disc.glide} min={1} max={7} color="#60BFFF"/><FlightBar label="Turn" value={disc.turn} min={-5} max={1} color={disc.turn<0?theme.warning:theme.accent}/><FlightBar label="Fade" value={disc.fade} min={0} max={5} color="#FF7A3D"/></div>{disc.notes&&<div style={{background:theme.surfaceAlt,borderRadius:"8px",padding:"10px 12px",fontSize:"12px",color:theme.textMuted,marginTop:"8px"}}>{disc.notes}</div>}<button style={{...s.btnDanger,padding:"10px",marginTop:"12px"}} onClick={()=>onDelete(disc.id)}>Remove</button></div>)}
     </div>
   );
 }
