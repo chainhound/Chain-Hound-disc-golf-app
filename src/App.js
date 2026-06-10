@@ -1509,8 +1509,8 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               const diff = sc ? sc - h.par : null;
               return (
                 <div key={h.number} onClick={()=>{const updated={...round,currentHole:h.number};setRound(updated);saveActiveRound(updated);}} style={{ width:"44px",height:"44px",background:h.number===round.currentHole?"#00A651":sc?(diff<0?"rgba(0,166,81,0.2)":diff===0?"rgba(245,166,35,0.2)":"rgba(229,57,53,0.15)"):"#F0F0F0", border:`1px solid ${h.number===round.currentHole?theme.accentDim:sc?(diff<0?theme.accentDim:diff===0?"#5C4A00":"rgba(255,77,77,0.3)"):theme.border}`, borderRadius:"10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer" }}>
-                  <div style={{fontSize:"11px",color:theme.textMuted}}>{h.number}</div>
-                  <div style={{fontSize:"13px",fontWeight:"700",color:sc?(diff<0?theme.accent:diff===0?theme.warning:theme.error):theme.textDim}}>{sc||"·"}</div>
+                  <div style={{fontSize:"11px",color:"rgba(255,255,255,0.7)"}}>{h.number}</div>
+                  <div style={{fontSize:"13px",fontWeight:"700",color:sc?(diff<0?"#FFFFFF":diff===0?"#FFD700":"#FF6B6B"):"rgba(255,255,255,0.4)"}}>{sc||"·"}</div>
                 </div>
               );
             })}
@@ -1709,12 +1709,12 @@ function RoundScreen({ bag, settings }) {
           <div style={{fontSize:"13px",color:theme.textMuted,lineHeight:1.6,marginBottom:"12px"}}>Chain Hound uses these discs for every recommendation.</div>
           <div style={{fontSize:"12px",color:theme.accent,fontWeight:"600"}}>{pendingCourse.name}</div>
         </div>
-        <div style={s.card}>
-          <div style={s.slabel}>Your Bag ({bag.length} discs)</div>
-          {bag.length===0?<div style={{fontSize:"13px",color:theme.error,textAlign:"center",padding:"16px"}}>⚠️ No discs — add discs first!</div>:
+        <div style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"16px",padding:"20px",marginBottom:"16px"}}>
+          <div style={{fontSize:"10px",letterSpacing:"0.2em",color:"#007A3D",textTransform:"uppercase",marginBottom:"12px",fontWeight:"700"}}>Your Bag ({bag.length} discs)</div>
+          {bag.length===0?<div style={{fontSize:"13px",color:"#E53935",textAlign:"center",padding:"16px"}}>⚠️ No discs — add discs first!</div>:
             bag.map((disc,i)=>{const stab=getStability(disc.turn,disc.fade);const t=DISC_TYPES.find(t=>t.key===disc.type);return(
-              <div key={disc.id} style={{...s.row,borderBottom:i<bag.length-1?`1px solid ${theme.border}`:"none"}}>
-                <div style={{display:"flex",alignItems:"center",gap:"10px"}}><span>{t?.icon}</span><div><div style={{fontSize:"13px",color:theme.text,fontWeight:"600"}}>{disc.name}</div><div style={{fontSize:"11px",color:theme.textMuted}}>{disc.speed}/{disc.glide}/{disc.turn}/{disc.fade}</div></div></div>
+              <div key={disc.id} style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"10px",padding:"12px",marginBottom:"8px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{display:"flex",alignItems:"center",gap:"10px"}}><span>{t?.icon}</span><div><div style={{fontSize:"13px",color:"#111111",fontWeight:"600"}}>{disc.name}</div><div style={{fontSize:"11px",color:"#555555"}}>{disc.speed}/{disc.glide}/{disc.turn}/{disc.fade}</div></div></div>
                 <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px"}}>{stab.label}</span>
               </div>
             );})}
@@ -1775,7 +1775,7 @@ function RoundScreen({ bag, settings }) {
 // ─── Bag Screen ───────────────────────────────────────────────────────────────
 const FlightBar = ({label,value,min,max,color=theme.accent}) => {
   const pct=Math.min(100,Math.max(0,((value-min)/(max-min))*100));
-  return (<div style={{marginBottom:"10px"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:"4px"}}><span style={{fontSize:"10px",color:theme.textMuted,letterSpacing:"0.1em",textTransform:"uppercase"}}>{label}</span><span style={{fontSize:"12px",color,fontWeight:"700"}}>{value}</span></div><div style={{height:"4px",background:theme.surfaceAlt,borderRadius:"2px",overflow:"hidden"}}><div style={{width:`${pct}%`,height:"100%",background:color,borderRadius:"2px"}}/></div></div>);
+  return (<div style={{marginBottom:"10px"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:"4px"}}><span style={{fontSize:"10px",color:"#555555",letterSpacing:"0.1em",textTransform:"uppercase"}}>{label}</span><span style={{fontSize:"12px",color,fontWeight:"700"}}>{value}</span></div><div style={{height:"4px",background:"#E0E0E0",borderRadius:"2px",overflow:"hidden"}}><div style={{width:`${pct}%`,height:"100%",background:color,borderRadius:"2px"}}/></div></div>);
 };
 
 function DiscCard({disc,onDelete}) {
@@ -1786,13 +1786,13 @@ function DiscCard({disc,onDelete}) {
     <div style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"14px",marginBottom:"12px",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,166,81,0.1)"}}>
       <div style={{padding:"16px",cursor:"pointer",display:"flex",alignItems:"center",gap:"12px"}} onClick={()=>setExp(!exp)}>
         <div style={{width:"42px",height:"42px",background:"#E8F5EE",border:"1px solid #00A651",borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",flexShrink:0}}>{t?.icon}</div>
-        <div style={{flex:1}}><div style={{fontSize:"14px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#111111"}}>{disc.name}</div><div style={{fontSize:"11px",color:"#666666",marginTop:"2px"}}>{disc.brand} · {disc.plastic||t?.label}</div></div>
+        <div style={{flex:1}}><div style={{fontSize:"15px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#111111"}}>{disc.name}</div><div style={{fontSize:"12px",color:"#555555",marginTop:"2px"}}>{disc.brand} · {disc.plastic||t?.label}</div></div>
         <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
           <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px",fontWeight:"600"}}>{stab.label}</span>
           <div style={{color:"#00A651"}}>{exp?"▲":"▼"}</div>
         </div>
       </div>
-      {exp&&(<div style={{padding:"0 16px 16px",borderTop:"1px solid #E0E0E0"}}><div style={{paddingTop:"16px"}}><FlightBar label="Speed" value={disc.speed} min={1} max={14}/><FlightBar label="Glide" value={disc.glide} min={1} max={7} color="#60BFFF"/><FlightBar label="Turn" value={disc.turn} min={-5} max={1} color={disc.turn<0?theme.warning:theme.accent}/><FlightBar label="Fade" value={disc.fade} min={0} max={5} color="#FF7A3D"/></div>{disc.notes&&<div style={{background:theme.surfaceAlt,borderRadius:"8px",padding:"10px 12px",fontSize:"12px",color:theme.textMuted,marginTop:"8px"}}>{disc.notes}</div>}<button style={{...s.btnDanger,padding:"10px",marginTop:"12px"}} onClick={()=>onDelete(disc.id)}>Remove</button></div>)}
+      {exp&&(<div style={{padding:"0 16px 16px",borderTop:"1px solid #E0E0E0"}}><div style={{paddingTop:"16px"}}><FlightBar label="Speed" value={disc.speed} min={1} max={14}/><FlightBar label="Glide" value={disc.glide} min={1} max={7} color="#60BFFF"/><FlightBar label="Turn" value={disc.turn} min={-5} max={1} color={disc.turn<0?theme.warning:theme.accent}/><FlightBar label="Fade" value={disc.fade} min={0} max={5} color="#FF7A3D"/></div>{disc.notes&&<div style={{background:"#F0F0F0",borderRadius:"8px",padding:"10px 12px",fontSize:"12px",color:"#555555",marginTop:"8px"}}>{disc.notes}</div>}<button style={{...s.btnDanger,padding:"10px",marginTop:"12px"}} onClick={()=>onDelete(disc.id)}>Remove</button></div>)}
     </div>
   );
 }
@@ -1871,7 +1871,7 @@ function HomeScreen({setTab,bag,settings}) {
       <div style={s.content}>
         {activeRound&&(<div style={{...s.cardAccent,marginBottom:"16px"}}><div style={s.slabel}>⚡ Active Round</div><div style={{fontSize:"15px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",marginBottom:"4px"}}>{activeRound.courseName}</div><div style={{fontSize:"12px",color:theme.textMuted,marginBottom:"12px"}}>Hole {activeRound.currentHole} in progress</div><button style={s.btn} onClick={()=>setTab("round")}>Resume →</button></div>)}
         <div style={{...s.cardAccent,position:"relative",overflow:"hidden"}}><GlowOrb top={-40} left={-40} size={180} opacity={0.12}/><div style={s.slabel}>Quick Start</div><div style={{fontSize:"20px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",marginBottom:"8px",color:"#FFFFFF"}}>Start a Round</div><div style={{fontSize:"13px",color:"rgba(255,255,255,0.9)",marginBottom:"20px",lineHeight:1.6}}>One tap — instant caddy advice on every hole. 🐕</div><button style={s.btn} onClick={()=>setTab("round")}>🥏 Begin Round</button></div>
-        <div style={s.card}><div style={s.slabel}>My Bag</div><div style={{display:"flex",alignItems:"flex-end",gap:"16px",marginBottom:"16px"}}><div><div style={{fontSize:"48px",fontWeight:"700",color:theme.accent,fontFamily:"'DM Sans',sans-serif",lineHeight:1}}>{bag.length}</div><div style={{fontSize:"12px",color:theme.textMuted,marginTop:"4px"}}>{bag.length===1?"Disc":"Discs"} in bag</div></div></div><button style={bag.length===0?s.btn:s.btnOut} onClick={()=>setTab("bag")}>{bag.length===0?"Add Your Discs":"Manage Bag"}</button></div>
+        <div style={{background:"#00A651",border:"1px solid #007A3D",borderRadius:"16px",padding:"20px",marginBottom:"16px"}}><div style={{fontSize:"10px",letterSpacing:"0.2em",color:"rgba(255,255,255,0.85)",textTransform:"uppercase",marginBottom:"12px",fontWeight:"500"}}>My Bag</div><div style={{display:"flex",alignItems:"flex-end",gap:"16px",marginBottom:"16px"}}><div><div style={{fontSize:"48px",fontWeight:"700",color:theme.accent,fontFamily:"'DM Sans',sans-serif",lineHeight:1}}>{bag.length}</div><div style={{fontSize:"12px",color:theme.textMuted,marginTop:"4px"}}>{bag.length===1?"Disc":"Discs"} in bag</div></div></div><button style={{background:"rgba(255,255,255,0.2)",color:"#FFFFFF",border:"2px solid rgba(255,255,255,0.6)",borderRadius:"12px",padding:"12px 24px",fontSize:"13px",fontWeight:"700",cursor:"pointer",width:"100%",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}} onClick={()=>setTab("bag")}>{bag.length===0?"Add Your Discs":"Manage Bag"}</button></div>
         <div style={s.card}><div style={s.slabel}>Player Profile</div><div style={{...s.row,borderBottom:`1px solid ${theme.border}`}}><span style={{fontSize:"12px",color:"rgba(255,255,255,0.85)"}}>Dominant Hand</span><span style={{fontSize:"13px",color:"#FFFFFF",fontWeight:"700"}}>{settings?.dominantHand==="left"?"Left (LHBH)":"Right (RHBH)"}</span></div><div style={{...s.row,borderBottom:"none"}}><span style={{fontSize:"12px",color:"rgba(255,255,255,0.85)"}}>Backhand fade direction</span><span style={{fontSize:"13px",color:"#FFFFFF",fontWeight:"600"}}>{settings?.dominantHand==="left"?"Right →":"Left ←"}</span></div></div>
       </div>
     </div>
@@ -1921,8 +1921,8 @@ export default function App() {
           {tab==="round"&&<RoundScreen bag={bag} settings={settings}/>}
           {tab==="settings"&&<SettingsScreen bag={bag} setBag={setBag} settings={settings} setSettings={setSettings}/>}
         </div>
-        <div style={{...s.nav,background:t.surface,borderTop:`1px solid ${t.border}`}}>
-          {navItems.map(item=>{const active=tab===item.key;return(<div key={item.key} style={s.navItem} onClick={()=>setTab(item.key)}><div style={{fontSize:"22px",lineHeight:1,filter:active?"none":"grayscale(1) opacity(0.4)",transform:active?"scale(1.15)":"scale(1)",transition:"all 0.2s"}}>{item.icon}</div><div style={{fontSize:"10px",letterSpacing:"0.1em",textTransform:"uppercase",fontWeight:"500",color:active?t.accent:t.textDim}}>{item.label}</div></div>);})}
+        <div style={{...s.nav,background:"#FFFFFF",borderTop:"2px solid #00A651"}}>
+          {navItems.map(item=>{const active=tab===item.key;return(<div key={item.key} style={s.navItem} onClick={()=>setTab(item.key)}><div style={{fontSize:"22px",lineHeight:1,filter:active?"none":"grayscale(1) opacity(0.4)",transform:active?"scale(1.15)":"scale(1)",transition:"all 0.2s"}}>{item.icon}</div><div style={{fontSize:"10px",letterSpacing:"0.1em",textTransform:"uppercase",fontWeight:"500",color:active?"#00A651":"#999999"}}>{item.label}</div></div>);})}
         </div>
       </div>
     </>
