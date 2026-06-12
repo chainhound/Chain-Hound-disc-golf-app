@@ -2,31 +2,31 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // ─── Design Tokens ────────────────────────────────────────────────────────────
 const THEME_NORMAL = {
-  bg: "#FFFFFF",           // white background everywhere
-  surface: "#00A651",      // green cards/boxes
-  surfaceAlt: "#007A3D",   // darker green for inner boxes
-  border: "#007A3D",       // green border
-  accent: "#FFFFFF",       // white text on green
-  accentDim: "#00C860",    // lighter green for highlights
+  bg: "#f6eeda",           // white background everywhere
+  surface: "#425037",      // green cards/boxes
+  surfaceAlt: "#2D3A26",   // darker green for inner boxes
+  border: "#2D3A26",       // green border
+  accent: "#f6eeda",       // white text on green
+  accentDim: "#4A5E3A",    // lighter green for highlights
   accentGlow: "rgba(0,166,81,0.15)",
   text: "#111111",         // dark text on white backgrounds
-  textMuted: "#FFFFFF",    // white text on green surfaces
+  textMuted: "#f6eeda",    // white text on green surfaces
   textDim: "#555555",      // medium gray for secondary text on white
   warning: "#F5A623",
   error: "#E53935",
-  cardBg: "#00A651",
-  headerBg: "#FFFFFF",
+  cardBg: "#425037",
+  headerBg: "#f6eeda",
   // Extra tokens for the light theme
-  greenDark: "#007A3D",
-  greenMid: "#00A651",
-  greenLight: "#00C860",
-  onGreen: "#FFFFFF",      // text color when on green background
+  greenDark: "#2D3A26",
+  greenMid: "#425037",
+  greenLight: "#4A5E3A",
+  onGreen: "#f6eeda",      // text color when on green background
   onWhite: "#111111",      // text color when on white background
 };
 const THEME_OUTDOOR = {
   bg: "#000000", surface: "#0D0D0D", surfaceAlt: "#1A1A1A",
-  border: "#404040", accent: "#00FF55", accentDim: "#007722",
-  accentGlow: "rgba(0,255,85,0.2)", text: "#FFFFFF",
+  border: "#404040", accent: "#425037", accentDim: "#2D3A26",
+  accentGlow: "rgba(0,255,85,0.2)", text: "#f6eeda",
   textMuted: "#CCCCCC", textDim: "#666666",
   warning: "#FFD700", error: "#FF4444",
 };
@@ -34,22 +34,22 @@ const getTheme = (outdoor) => outdoor ? THEME_OUTDOOR : THEME_NORMAL;
 let theme = THEME_NORMAL;
 
 const s = {
-  app: { background: "#FFFFFF", minHeight: "100vh", maxWidth: "430px", margin: "0 auto", display: "flex", flexDirection: "column", fontFamily: "'DM Mono','Courier New',monospace", color: "#111111" },
-  header: { padding: "52px 24px 16px", borderBottom: "1px solid #E0E0E0", background: "#FFFFFF", position: "relative" },
-  htitle: { fontSize: "11px", letterSpacing: "0.25em", color: "#00A651", textTransform: "uppercase", marginBottom: "4px", fontWeight: "500" },
+  app: { background: "#f6eeda", minHeight: "100vh", maxWidth: "430px", margin: "0 auto", display: "flex", flexDirection: "column", fontFamily: "'DM Mono','Courier New',monospace", color: "#111111" },
+  header: { padding: "52px 24px 16px", borderBottom: "1px solid #E0E0E0", background: "#f6eeda", position: "relative" },
+  htitle: { fontSize: "11px", letterSpacing: "0.25em", color: "#425037", textTransform: "uppercase", marginBottom: "4px", fontWeight: "500" },
   hmain: { fontSize: "26px", fontWeight: "700", color: "#111111", letterSpacing: "-0.02em", fontFamily: "'DM Sans',sans-serif" },
   content: { flex: 1, overflowY: "auto", padding: "24px", paddingBottom: "100px" },
-  card: { background: "#00A651", border: "1px solid #007A3D", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
-  cardAccent: { background: "#007A3D", border: "1px solid #005C2E", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
-  slabel: { fontSize: "10px", letterSpacing: "0.2em", color: "#FFFFFF", textTransform: "uppercase", marginBottom: "12px", fontWeight: "500" },
-  btn: { background: "#00A651", color: "#FFFFFF", border: "none", borderRadius: "12px", padding: "14px 24px", fontSize: "13px", fontWeight: "700", letterSpacing: "0.05em", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
-  btnOut: { background: "transparent", color: "#00A651", border: "1px solid #00A651", borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
+  card: { background: "#425037", border: "1px solid #2D3A26", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
+  cardAccent: { background: "#2D3A26", border: "1px solid #1E2A1A", borderRadius: "16px", padding: "20px", marginBottom: "16px" },
+  slabel: { fontSize: "10px", letterSpacing: "0.2em", color: "#f6eeda", textTransform: "uppercase", marginBottom: "12px", fontWeight: "500" },
+  btn: { background: "#425037", color: "#f6eeda", border: "none", borderRadius: "12px", padding: "14px 24px", fontSize: "13px", fontWeight: "700", letterSpacing: "0.05em", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
+  btnOut: { background: "transparent", color: "#425037", border: "1px solid #425037", borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
   btnDanger: { background: "transparent", color: "#E53935", border: "1px solid rgba(229,57,53,0.4)", borderRadius: "12px", padding: "13px 24px", fontSize: "13px", fontWeight: "600", cursor: "pointer", width: "100%", fontFamily: "'DM Mono',monospace", textTransform: "uppercase" },
   input: { background: "#F5F5F5", border: "1px solid #CCCCCC", borderRadius: "10px", padding: "12px 14px", fontSize: "13px", color: "#111111", width: "100%", fontFamily: "'DM Mono',monospace", outline: "none", boxSizing: "border-box" },
-  label: { fontSize: "10px", letterSpacing: "0.15em", color: "#FFFFFF", textTransform: "uppercase", marginBottom: "6px", display: "block", fontWeight: "500" },
+  label: { fontSize: "10px", letterSpacing: "0.15em", color: "#f6eeda", textTransform: "uppercase", marginBottom: "6px", display: "block", fontWeight: "500" },
   row: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.2)" },
   tag: { display: "inline-block", background: theme.surfaceAlt, border: `1px solid ${theme.border}`, borderRadius: "6px", padding: "3px 10px", fontSize: "11px", color: theme.textMuted },
-  nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: "430px", background: "#FFFFFF", borderTop: "2px solid #00A651", display: "flex", padding: "12px 0 24px", zIndex: 100 },
+  nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: "430px", background: "#f6eeda", borderTop: "2px solid #425037", display: "flex", padding: "12px 0 24px", zIndex: 100 },
   navItem: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", cursor: "pointer", padding: "4px 0" },
 };
 
@@ -737,7 +737,7 @@ function DiscPicker({ bag, selected, onSelect, onCancel }) {
   const byType = DISC_TYPES.map(t => ({ ...t, discs: bag.filter(d => d.type === t.key) }));
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", zIndex: 200, display: "flex", alignItems: "flex-end" }}>
-      <div style={{ background: "#FFFFFF", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: "430px", margin: "0 auto", padding: "24px", maxHeight: "70vh", overflowY: "auto" }}>
+      <div style={{ background: "#f6eeda", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: "430px", margin: "0 auto", padding: "24px", maxHeight: "70vh", overflowY: "auto" }}>
         <div style={{ ...s.slabel, marginBottom: "16px" }}>Choose a Different Disc</div>
         {byType.map(type => type.discs.length > 0 && (
           <div key={type.key} style={{ marginBottom: "12px" }}>
@@ -746,7 +746,7 @@ function DiscPicker({ bag, selected, onSelect, onCancel }) {
               const stab = getStability(disc.turn, disc.fade);
               const isSelected = selected?.id === disc.id;
               return (
-                <div key={disc.id} onClick={() => onSelect(disc)} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",marginBottom:"6px",background:isSelected?"#E8F5EE":"#FFFFFF",border:`1px solid ${isSelected?"#00A651":"#CCCCCC"}`,borderRadius:"10px",cursor:"pointer" }}>
+                <div key={disc.id} onClick={() => onSelect(disc)} style={{ display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",marginBottom:"6px",background:isSelected?"#E8F5EE":"#f6eeda",border:`1px solid ${isSelected?"#425037":"#CCCCCC"}`,borderRadius:"10px",cursor:"pointer" }}>
                   <div><div style={{fontSize:"13px",fontWeight:"700",color:"#111111"}}>{disc.name}</div><div style={{fontSize:"11px",color:"#666666"}}>{disc.brand} · {disc.speed}/{disc.glide}/{disc.turn}/{disc.fade}</div></div>
                   <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px"}}>{stab.label}</span>
                 </div>
@@ -989,18 +989,18 @@ const RELEASE_INFO = {
 function InfoPopup({ title, lines, onClose }) {
   return (
     <div style={{ position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"flex-end",justifyContent:"center" }} onClick={onClose}>
-      <div style={{ background:"#FFFFFF",border:"2px solid #00A651",borderRadius:"20px 20px 0 0",padding:"24px",width:"100%",maxWidth:"430px" }} onClick={e=>e.stopPropagation()}>
+      <div style={{ background:"#f6eeda",border:"2px solid #425037",borderRadius:"20px 20px 0 0",padding:"24px",width:"100%",maxWidth:"430px" }} onClick={e=>e.stopPropagation()}>
         <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"20px" }}>
-          <div style={{ fontSize:"20px",fontWeight:"800",color:"#00A651",fontFamily:"'DM Sans',sans-serif" }}>{title}</div>
+          <div style={{ fontSize:"20px",fontWeight:"800",color:"#425037",fontFamily:"'DM Sans',sans-serif" }}>{title}</div>
           <div onClick={onClose} style={{ fontSize:"20px",color:"#4A7A55",cursor:"pointer",padding:"4px 8px" }}>✕</div>
         </div>
         {lines.map((line,i) => (
-          <div key={i} style={{ marginBottom:"14px",padding:"10px 14px",background:"#E8F5EE",borderRadius:"10px",border:"1px solid #00A651" }}>
-            <div style={{ fontSize:"10px",color:"#007A3D",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"4px",fontWeight:"600" }}>{line.label}</div>
+          <div key={i} style={{ marginBottom:"14px",padding:"10px 14px",background:"#E8F5EE",borderRadius:"10px",border:"1px solid #425037" }}>
+            <div style={{ fontSize:"10px",color:"#2D3A26",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"4px",fontWeight:"600" }}>{line.label}</div>
             <div style={{ fontSize:"14px",color:"#111111",lineHeight:1.6 }}>{line.text}</div>
           </div>
         ))}
-        <button onClick={onClose} style={{ width:"100%",padding:"14px",background:"#00A651",color:"#FFFFFF",border:"none",borderRadius:"12px",fontSize:"14px",fontWeight:"700",cursor:"pointer" }}>Got It ✓</button>
+        <button onClick={onClose} style={{ width:"100%",padding:"14px",background:"#425037",color:"#f6eeda",border:"none",borderRadius:"12px",fontSize:"14px",fontWeight:"700",cursor:"pointer" }}>Got It ✓</button>
       </div>
     </div>
   );
@@ -1017,9 +1017,9 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
   const handleThrowChange = (t) => { setSelectedThrow(t); onThrowTypeChange && onThrowTypeChange(t); };
 
   if (loading) return (
-    <div style={{ background:"#00A651",border:"2px solid #007A3D",borderRadius:"20px",padding:"28px 20px",marginBottom:"16px",textAlign:"center" }}>
+    <div style={{ background:"#425037",border:"2px solid #2D3A26",borderRadius:"20px",padding:"28px 20px",marginBottom:"16px",textAlign:"center" }}>
       <div style={{ fontSize:"40px",marginBottom:"12px" }}>🐕</div>
-      <div style={{ fontSize:"16px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#FFFFFF",marginBottom:"6px" }}>Chain Hound thinking...</div>
+      <div style={{ fontSize:"16px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#f6eeda",marginBottom:"6px" }}>Chain Hound thinking...</div>
       <div style={{ fontSize:"13px",color:"rgba(255,255,255,0.85)",marginBottom:"20px" }}>Reading the hole layout</div>
       <div style={{ display:"flex",justifyContent:"center",gap:"8px" }}>
         {[0,1,2].map(i=><div key={i} style={{width:"10px",height:"10px",borderRadius:"50%",background:"#00FF77",animation:`pulse 1.2s ease-in-out ${i*0.2}s infinite`}}/>)}
@@ -1043,16 +1043,16 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
       {throwPopup && <InfoPopup title={`${THROW_INFO[throwPopup]?.icon} ${THROW_INFO[throwPopup]?.title}`} lines={[{label:"How to throw",text:THROW_INFO[throwPopup]?.how},{label:"What it does",text:THROW_INFO[throwPopup]?.result},{label:"When to use",text:THROW_INFO[throwPopup]?.when}]} onClose={()=>setThrowPopup(null)}/>}
       {releasePopup && <InfoPopup title={`${RELEASE_INFO[releasePopup]?.icon} ${releasePopup} Release`} lines={[{label:"How to do it",text:RELEASE_INFO[releasePopup]?.how},{label:"What happens",text:RELEASE_INFO[releasePopup]?.result},{label:"When to use",text:RELEASE_INFO[releasePopup]?.when}]} onClose={()=>setReleasePopup(null)}/>}
 
-      <div style={{ background:"#FFFFFF",border:"2px solid #00A651",borderRadius:"20px",marginBottom:"16px",overflow:"hidden",boxShadow:"0 2px 12px rgba(0,166,81,0.15)" }}>
+      <div style={{ background:"#f6eeda",border:"2px solid #425037",borderRadius:"20px",marginBottom:"16px",overflow:"hidden",boxShadow:"0 2px 12px rgba(0,166,81,0.15)" }}>
         {/* Banner */}
-        <div style={{ background:"#00A651",padding:"10px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"0" }}>
+        <div style={{ background:"#425037",padding:"10px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",borderRadius:"0" }}>
           <div style={{ display:"flex",alignItems:"center",gap:"8px" }}>
             <span style={{ fontSize:"22px" }}>🐕</span>
-            <span style={{ fontSize:"14px",fontWeight:"800",color:"#FFFFFF",letterSpacing:"0.05em",fontFamily:"'DM Sans',sans-serif" }}>CHAIN HOUND SAYS</span>
+            <span style={{ fontSize:"14px",fontWeight:"800",color:"#f6eeda",letterSpacing:"0.05em",fontFamily:"'DM Sans',sans-serif" }}>CHAIN HOUND SAYS</span>
           </div>
           <div style={{ display:"flex",gap:"6px",alignItems:"center" }}>
-            {rec.isDemo && <span style={{ fontSize:"9px",color:"#FFFFFF",background:"rgba(0,0,0,0.2)",borderRadius:"4px",padding:"2px 6px",fontWeight:"700" }}>OFFLINE</span>}
-            <span style={{ fontSize:"10px",fontWeight:"700",color:"#FFFFFF",background:"rgba(0,0,0,0.15)",borderRadius:"6px",padding:"2px 8px" }}>
+            {rec.isDemo && <span style={{ fontSize:"9px",color:"#f6eeda",background:"rgba(0,0,0,0.2)",borderRadius:"4px",padding:"2px 6px",fontWeight:"700" }}>OFFLINE</span>}
+            <span style={{ fontSize:"10px",fontWeight:"700",color:"#f6eeda",background:"rgba(0,0,0,0.15)",borderRadius:"6px",padding:"2px 8px" }}>
               {rec.confidence==="high"?"✓ Confident":rec.confidence==="medium"?"~ Good Guess":"? Uncertain"}
             </span>
           </div>
@@ -1062,11 +1062,11 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
 
           {/* Shot Line badge — Week 3 integration */}
           {rec.shotLine && (
-            <div style={{ marginBottom:"14px",padding:"10px 14px",background:"#00A651",border:"1px solid #007A3D",borderRadius:"10px",display:"flex",alignItems:"center",gap:"10px" }}>
+            <div style={{ marginBottom:"14px",padding:"10px 14px",background:"#425037",border:"1px solid #2D3A26",borderRadius:"10px",display:"flex",alignItems:"center",gap:"10px" }}>
               <div style={{ width:"28px",height:"28px",borderRadius:"50%",background:"#00FF77",color:"#000",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",fontWeight:"800",flexShrink:0 }}>{rec.shotLine}</div>
               <div>
                 <div style={{ fontSize:"10px",color:"rgba(255,255,255,0.8)",letterSpacing:"0.1em",fontWeight:"600" }}>RECOMMENDED SHOT LINE</div>
-                <div style={{ fontSize:"13px",color:"#FFFFFF",fontWeight:"600" }}>
+                <div style={{ fontSize:"13px",color:"#f6eeda",fontWeight:"600" }}>
                   {window.__chainHoundHoles?.find(h=>h.number===window.__currentHoleNumber)?.shotLines?.find(sl=>sl.id===rec.shotLine)?.label || `Line ${rec.shotLine}`}
                 </div>
               </div>
@@ -1074,9 +1074,9 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
           )}
 
           {/* Hero disc */}
-          <div style={{ background:"#00A651",border:"2px solid #007A3D",borderRadius:"16px",padding:"18px",marginBottom:"16px" }}>
+          <div style={{ background:"#425037",border:"2px solid #2D3A26",borderRadius:"16px",padding:"18px",marginBottom:"16px" }}>
             <div style={{ fontSize:"11px",color:"rgba(255,255,255,0.85)",letterSpacing:"0.15em",fontWeight:"700",textTransform:"uppercase",marginBottom:"8px" }}>🥏 Throw This Disc</div>
-            <div style={{ fontSize:"32px",fontWeight:"800",color:"#FFFFFF",fontFamily:"'DM Sans',sans-serif",lineHeight:1.1,marginBottom:"6px" }}>{rec.disc}</div>
+            <div style={{ fontSize:"32px",fontWeight:"800",color:"#f6eeda",fontFamily:"'DM Sans',sans-serif",lineHeight:1.1,marginBottom:"6px" }}>{rec.disc}</div>
             {discInBag && (
               <div style={{ fontSize:"12px",color:"#9ECBA8",marginBottom:"8px" }}>
                 {discInBag.brand} · {discInBag.speed}/{discInBag.glide}/{discInBag.turn}/{discInBag.fade}
@@ -1086,35 +1086,35 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
           </div>
 
           {/* How to throw */}
-          <div style={{ background:"#F5F5F5",border:"1px solid #00A651",borderRadius:"14px",padding:"14px",marginBottom:"16px" }}>
-            <div style={{ fontSize:"11px",color:"#007A3D",letterSpacing:"0.12em",fontWeight:"600",textTransform:"uppercase",marginBottom:"10px" }}>How to Throw</div>
+          <div style={{ background:"#F5F5F5",border:"1px solid #425037",borderRadius:"14px",padding:"14px",marginBottom:"16px" }}>
+            <div style={{ fontSize:"11px",color:"#2D3A26",letterSpacing:"0.12em",fontWeight:"600",textTransform:"uppercase",marginBottom:"10px" }}>How to Throw</div>
             <div style={{ display:"flex",gap:"8px" }}>
-              <div onClick={()=>setThrowPopup(displayThrow)} style={{ flex:1,background:"#00A651",border:"1px solid #007A3D",borderRadius:"10px",padding:"10px 12px",cursor:"pointer",position:"relative" }}>
+              <div onClick={()=>setThrowPopup(displayThrow)} style={{ flex:1,background:"#425037",border:"1px solid #2D3A26",borderRadius:"10px",padding:"10px 12px",cursor:"pointer",position:"relative" }}>
                 <div style={{ position:"absolute",top:"8px",right:"8px",width:"18px",height:"18px",borderRadius:"50%",background:"rgba(0,255,119,0.2)",border:"1px solid #00CC60",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",color:"#00FF77",fontWeight:"700" }}>?</div>
                 <div style={{ fontSize:"20px",marginBottom:"4px" }}>{throwInfo?.icon}</div>
-                <div style={{ fontSize:"14px",fontWeight:"700",color:"#FFFFFF" }}>{displayThrow}</div>
+                <div style={{ fontSize:"14px",fontWeight:"700",color:"#f6eeda" }}>{displayThrow}</div>
               </div>
               {rec.releaseAngle && (
-                <div onClick={()=>setReleasePopup(rec.releaseAngle)} style={{ flex:1,background:"#005C2E",border:"1px solid #003D1E",borderRadius:"10px",padding:"10px 12px",cursor:"pointer",position:"relative" }}>
+                <div onClick={()=>setReleasePopup(rec.releaseAngle)} style={{ flex:1,background:"#1E2A1A",border:"1px solid #003D1E",borderRadius:"10px",padding:"10px 12px",cursor:"pointer",position:"relative" }}>
                   <div style={{ position:"absolute",top:"8px",right:"8px",width:"18px",height:"18px",borderRadius:"50%",background:`${releaseInfo.color}22`,border:`1px solid ${releaseInfo.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",color:releaseInfo.color,fontWeight:"700" }}>?</div>
                   <div style={{ fontSize:"20px",marginBottom:"4px" }}>{releaseInfo.icon}</div>
-                  <div style={{ fontSize:"14px",fontWeight:"700",color:"#FFFFFF" }}>{rec.releaseAngle}</div>
+                  <div style={{ fontSize:"14px",fontWeight:"700",color:"#f6eeda" }}>{rec.releaseAngle}</div>
                 </div>
               )}
             </div>
           </div>
 
           {/* Reason */}
-          <div style={{ background:"#F5F5F5",border:"1px solid #00A651",borderRadius:"12px",padding:"14px",marginBottom:"14px" }}>
-            <div style={{ fontSize:"10px",color:"#007A3D",letterSpacing:"0.12em",fontWeight:"600",textTransform:"uppercase",marginBottom:"8px" }}>📋 Why This Shot</div>
+          <div style={{ background:"#F5F5F5",border:"1px solid #425037",borderRadius:"12px",padding:"14px",marginBottom:"14px" }}>
+            <div style={{ fontSize:"10px",color:"#2D3A26",letterSpacing:"0.12em",fontWeight:"600",textTransform:"uppercase",marginBottom:"8px" }}>📋 Why This Shot</div>
             <div style={{ fontSize:"13px",color:"#111111",lineHeight:1.7 }}>{rec.reason}</div>
           </div>
 
           {/* Putting tip */}
           {rec.puttingTip && (
-            <div style={{ background:"#00A651",border:"1px solid #007A3D",borderRadius:"12px",padding:"14px",marginBottom:"14px" }}>
+            <div style={{ background:"#425037",border:"1px solid #2D3A26",borderRadius:"12px",padding:"14px",marginBottom:"14px" }}>
               <div style={{ fontSize:"10px",color:"rgba(255,255,255,0.85)",fontWeight:"700",letterSpacing:"0.1em",marginBottom:"6px" }}>🎯 PUTTING ADVICE</div>
-              <div style={{ fontSize:"13px",color:"#FFFFFF",lineHeight:1.7 }}>{rec.puttingTip}</div>
+              <div style={{ fontSize:"13px",color:"#f6eeda",lineHeight:1.7 }}>{rec.puttingTip}</div>
             </div>
           )}
 
@@ -1126,7 +1126,7 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
                 const active = displayThrow === tt;
                 return (
                   <div key={tt} style={{ display:"flex",alignItems:"center",gap:"4px" }}>
-                    <div onClick={()=>handleThrowChange(tt)} style={{ padding:"8px 12px",background:active?"#005C2E":"#00C875",border:"2px solid #007A3D",borderRadius:"8px",cursor:"pointer",fontSize:"12px",fontWeight:"700",color:"#FFFFFF",display:"flex",alignItems:"center",gap:"4px" }}>
+                    <div onClick={()=>handleThrowChange(tt)} style={{ padding:"8px 12px",background:active?"#1E2A1A":"#4A5E3A",border:"2px solid #2D3A26",borderRadius:"8px",cursor:"pointer",fontSize:"12px",fontWeight:"700",color:"#f6eeda",display:"flex",alignItems:"center",gap:"4px" }}>
                       <span>{THROW_INFO[tt]?.icon}</span>{tt}
                     </div>
                     <div onClick={()=>setThrowPopup(tt)} style={{ width:"20px",height:"20px",borderRadius:"50%",background:"rgba(0,255,119,0.15)",border:"1px solid #2A5C34",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",color:"#9ECBA8",cursor:"pointer",fontWeight:"700",flexShrink:0 }}>?</div>
@@ -1136,7 +1136,7 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
             </div>
           </div>
 
-          {altDisc && <div style={{ fontSize:"12px",color:"#111111",marginBottom:"14px",padding:"8px 12px",background:"#F0F0F0",border:"1px solid #00A651",borderRadius:"8px" }}>Also consider: <span style={{ color:"#007A3D",fontWeight:"700" }}>{rec.alternative}</span></div>}
+          {altDisc && <div style={{ fontSize:"12px",color:"#111111",marginBottom:"14px",padding:"8px 12px",background:"#F0F0F0",border:"1px solid #425037",borderRadius:"8px" }}>Also consider: <span style={{ color:"#2D3A26",fontWeight:"700" }}>{rec.alternative}</span></div>}
 
           {onFeedback && (
             <div style={{ display:"flex",gap:"8px",marginBottom:"14px",alignItems:"center" }}>
@@ -1147,10 +1147,10 @@ function RecommendationCard({ rec, loading, bag, onConfirm, onSwap, onThrowTypeC
           )}
 
           {/* Confirm */}
-          <button onClick={() => onConfirm(discInBag || bag[0], displayThrow)} style={{ width:"100%",background:"#00A651",color:"#FFFFFF",border:"none",borderRadius:"14px",padding:"18px",fontSize:"16px",fontWeight:"800",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",marginBottom:"10px" }}>
+          <button onClick={() => onConfirm(discInBag || bag[0], displayThrow)} style={{ width:"100%",background:"#425037",color:"#f6eeda",border:"none",borderRadius:"14px",padding:"18px",fontSize:"16px",fontWeight:"800",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",marginBottom:"10px" }}>
             ✓ Throw {rec.disc}{rec.shotLine ? ` — Line ${rec.shotLine}` : ""}
           </button>
-          <button onClick={onSwap} style={{ width:"100%",background:"transparent",color:"#00A651",border:"2px solid #00A651",borderRadius:"14px",padding:"14px",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"'DM Mono',monospace",textTransform:"uppercase" }}>
+          <button onClick={onSwap} style={{ width:"100%",background:"transparent",color:"#425037",border:"2px solid #425037",borderRadius:"14px",padding:"14px",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"'DM Mono',monospace",textTransform:"uppercase" }}>
             🔄 Different Disc
           </button>
         </div>
@@ -1349,17 +1349,17 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
     <div style={s.content}>
 
       {/* ── HOLE HEADER ── */}
-      <div style={{ background:"#00A651", border:"1px solid #007A3D", borderRadius:"16px", padding:"14px 16px", marginBottom:"12px" }}>
+      <div style={{ background:"#425037", border:"1px solid #2D3A26", borderRadius:"16px", padding:"14px 16px", marginBottom:"12px" }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
           <div>
             <div style={{ fontSize:"11px", color:"rgba(255,255,255,0.8)", letterSpacing:"0.1em" }}>HOLE {round.currentHole} · PAR {hole.par}{hole.elevation==="uphill"?" ↑":hole.elevation==="downhill"?" ↓":""}</div>
-            <div style={{ fontSize:"22px", fontWeight:"700", color:"#FFFFFF", fontFamily:"'DM Sans',sans-serif" }}>
+            <div style={{ fontSize:"22px", fontWeight:"700", color:"#f6eeda", fontFamily:"'DM Sans',sans-serif" }}>
               {remainingDist}ft <span style={{fontSize:"13px",color:"rgba(255,255,255,0.8)",fontWeight:"400"}}>remaining</span>
             </div>
           </div>
           <div style={{ textAlign:"right" }}>
             <div style={{ fontSize:"11px", color:"rgba(255,255,255,0.8)" }}>SHOT</div>
-            <div style={{ fontSize:"28px", fontWeight:"700", color:"#FFFFFF", fontFamily:"'DM Sans',sans-serif" }}>{shotCount + 1}</div>
+            <div style={{ fontSize:"28px", fontWeight:"700", color:"#f6eeda", fontFamily:"'DM Sans',sans-serif" }}>{shotCount + 1}</div>
           </div>
         </div>
         {hole.notes && <div style={{ fontSize:"11px",color:"rgba(255,255,255,0.85)",marginTop:"8px",lineHeight:1.5 }}>📝 {hole.notes}</div>}
@@ -1374,18 +1374,26 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               const colors = ["#185FA5","#D85A30","#3B6D11"];
               const c = colors[i % colors.length];
               return (
-                <div key={sl.id} style={{ flex:"1 0 calc(50% - 4px)", padding:"10px 12px", background:"#005C2E", border:"2px solid #003D1E", borderRadius:"10px" }}>
+                <div key={sl.id} style={{ flex:"1 0 calc(50% - 4px)", padding:"10px 12px", background:"#1E2A1A", border:"2px solid #003D1E", borderRadius:"10px" }}>
                   <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"4px" }}>
                     <div style={{ width:"20px",height:"20px",borderRadius:"50%",background:c,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"11px",fontWeight:"700",flexShrink:0 }}>{sl.id}</div>
-                    <span style={{ fontSize:"12px",fontWeight:"600",color:"#FFFFFF" }}>{sl.label}</span>
+                    <span style={{ fontSize:"12px",fontWeight:"600",color:"#f6eeda" }}>{sl.label}</span>
                   </div>
                   <div style={{ fontSize:"11px",color:"rgba(255,255,255,0.85)",lineHeight:1.4 }}>{sl.description}</div>
-                  <div style={{ fontSize:"10px",color:"#00C875",marginTop:"4px",fontWeight:"600" }}>{sl.throwType}</div>
+                  <div style={{ fontSize:"10px",color:"#4A5E3A",marginTop:"4px",fontWeight:"600" }}>{sl.throwType}</div>
                 </div>
               );
             })}
           </div>
         </div>
+      )}
+
+      {/* ── Ace Caddie intro ── */}
+      {phase === "caddy" && !rec && !recLoading && (
+        <AceCaddie visible={true} message="Set the wind conditions below, then tap the button and I'll pick the right disc and shot line for you! 🥏" loading={false} />
+      )}
+      {recLoading && (
+        <AceCaddie visible={true} message="" loading={true} />
       )}
 
       {/* ── Week 5: WIND FIRST, THEN CADDY BUTTON ── */}
@@ -1397,10 +1405,10 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               {WIND_OPTIONS.map(w => (
                 <div key={w.key} onClick={() => setWind(w.key)}
                   style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center",
-                    background:wind===w.key?"#005C2E":"#00C875",
-                    border:"1px solid #007A3D",
+                    background:wind===w.key?"#1E2A1A":"#4A5E3A",
+                    border:"1px solid #2D3A26",
                     borderRadius:"8px", cursor:"pointer", fontSize:"10px",
-                    color:"#FFFFFF" }}>
+                    color:"#f6eeda" }}>
                   <div style={{fontSize:"14px"}}>{w.icon}</div>
                   <div style={{marginTop:"2px"}}>{w.label}</div>
                 </div>
@@ -1409,7 +1417,7 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
           </div>
           <button
             onClick={() => fireRecommendation()}
-            style={{ background:"#00A651", color:"#FFFFFF", border:"none", borderRadius:"16px", padding:"20px", fontSize:"18px", fontWeight:"700", letterSpacing:"0.08em", cursor:"pointer", width:"100%", fontFamily:"'DM Mono',monospace", textTransform:"uppercase", display:"flex", alignItems:"center", justifyContent:"center", gap:"10px" }}
+            style={{ background:"#425037", color:"#f6eeda", border:"none", borderRadius:"16px", padding:"20px", fontSize:"18px", fontWeight:"700", letterSpacing:"0.08em", cursor:"pointer", width:"100%", fontFamily:"'DM Mono',monospace", textTransform:"uppercase", display:"flex", alignItems:"center", justifyContent:"center", gap:"10px" }}
           >
             🐕 ASK MY CADDIE
           </button>
@@ -1446,7 +1454,7 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
           <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
             {WIND_OPTIONS.map(w => (
               <div key={w.key} onClick={() => { setWind(w.key); setRec(null); setTimeout(()=>getRecommendation({hole,bag,settings,remainingDist,wind:w.key,lie:lastShot?lastShot.lie:"tee",lastShots:holeShots,position:lastShot?lastShot.position:"center"}),50); }}
-                style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center", background:wind===w.key?"#005C2E":"#00C875", border:"1px solid #007A3D", borderRadius:"8px", cursor:"pointer", fontSize:"10px", color:"#FFFFFF" }}>
+                style={{ flex:"1 0 calc(33% - 4px)", padding:"8px 4px", textAlign:"center", background:wind===w.key?"#1E2A1A":"#4A5E3A", border:"1px solid #2D3A26", borderRadius:"8px", cursor:"pointer", fontSize:"10px", color:"#f6eeda" }}>
                 <div style={{fontSize:"14px"}}>{w.icon}</div>
                 <div style={{marginTop:"2px"}}>{w.label}</div>
               </div>
@@ -1482,9 +1490,9 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
           <div style={s.slabel}>Where did it land?</div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px" }}>
             {LIE_OPTIONS.map(lie => (
-              <div key={lie.key} onClick={()=>logShot(pendingShot, lie.key)} style={{ padding:"14px 8px", textAlign:"center", background:"#00C875", border:"1px solid #007A3D", borderRadius:"12px", cursor:"pointer", minHeight:"64px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px" }}>
+              <div key={lie.key} onClick={()=>logShot(pendingShot, lie.key)} style={{ padding:"14px 8px", textAlign:"center", background:"#4A5E3A", border:"1px solid #2D3A26", borderRadius:"12px", cursor:"pointer", minHeight:"64px", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:"4px" }}>
                 <div style={{fontSize:"20px"}}>{lie.icon}</div>
-                <div style={{fontSize:"10px",color:"#FFFFFF",letterSpacing:"0.05em"}}>{lie.label}</div>
+                <div style={{fontSize:"10px",color:"#f6eeda",letterSpacing:"0.05em"}}>{lie.label}</div>
               </div>
             ))}
           </div>
@@ -1508,9 +1516,9 @@ function HoleScreen({ round, setRound, course, courses, saveCourses, bag, settin
               const sc = round.scores?.[h.number];
               const diff = sc ? sc - h.par : null;
               return (
-                <div key={h.number} onClick={()=>{const updated={...round,currentHole:h.number};setRound(updated);saveActiveRound(updated);}} style={{ width:"44px",height:"44px",background:h.number===round.currentHole?"#00A651":sc?(diff<0?"rgba(0,166,81,0.2)":diff===0?"rgba(245,166,35,0.2)":"rgba(229,57,53,0.15)"):"#F0F0F0", border:`1px solid ${h.number===round.currentHole?theme.accentDim:sc?(diff<0?theme.accentDim:diff===0?"#5C4A00":"rgba(255,77,77,0.3)"):theme.border}`, borderRadius:"10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer" }}>
+                <div key={h.number} onClick={()=>{const updated={...round,currentHole:h.number};setRound(updated);saveActiveRound(updated);}} style={{ width:"44px",height:"44px",background:h.number===round.currentHole?"#425037":sc?(diff<0?"rgba(0,166,81,0.2)":diff===0?"rgba(245,166,35,0.2)":"rgba(229,57,53,0.15)"):"#F0F0F0", border:`1px solid ${h.number===round.currentHole?theme.accentDim:sc?(diff<0?theme.accentDim:diff===0?"#5C4A00":"rgba(255,77,77,0.3)"):theme.border}`, borderRadius:"10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer" }}>
                   <div style={{fontSize:"11px",color:"rgba(255,255,255,0.7)"}}>{h.number}</div>
-                  <div style={{fontSize:"13px",fontWeight:"700",color:sc?(diff<0?"#FFFFFF":diff===0?"#FFD700":"#FF6B6B"):"rgba(255,255,255,0.4)"}}>{sc||"·"}</div>
+                  <div style={{fontSize:"13px",fontWeight:"700",color:sc?(diff<0?"#f6eeda":diff===0?"#FFD700":"#FF6B6B"):"rgba(255,255,255,0.4)"}}>{sc||"·"}</div>
                 </div>
               );
             })}
@@ -1709,11 +1717,11 @@ function RoundScreen({ bag, settings }) {
           <div style={{fontSize:"13px",color:theme.textMuted,lineHeight:1.6,marginBottom:"12px"}}>Chain Hound uses these discs for every recommendation.</div>
           <div style={{fontSize:"12px",color:theme.accent,fontWeight:"600"}}>{pendingCourse.name}</div>
         </div>
-        <div style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"16px",padding:"20px",marginBottom:"16px"}}>
-          <div style={{fontSize:"10px",letterSpacing:"0.2em",color:"#007A3D",textTransform:"uppercase",marginBottom:"12px",fontWeight:"700"}}>Your Bag ({bag.length} discs)</div>
+        <div style={{background:"#f6eeda",border:"1px solid #425037",borderRadius:"16px",padding:"20px",marginBottom:"16px"}}>
+          <div style={{fontSize:"10px",letterSpacing:"0.2em",color:"#2D3A26",textTransform:"uppercase",marginBottom:"12px",fontWeight:"700"}}>Your Bag ({bag.length} discs)</div>
           {bag.length===0?<div style={{fontSize:"13px",color:"#E53935",textAlign:"center",padding:"16px"}}>⚠️ No discs — add discs first!</div>:
             bag.map((disc,i)=>{const stab=getStability(disc.turn,disc.fade);const t=DISC_TYPES.find(t=>t.key===disc.type);return(
-              <div key={disc.id} style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"10px",padding:"12px",marginBottom:"8px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div key={disc.id} style={{background:"#f6eeda",border:"1px solid #425037",borderRadius:"10px",padding:"12px",marginBottom:"8px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div style={{display:"flex",alignItems:"center",gap:"10px"}}><span>{t?.icon}</span><div><div style={{fontSize:"13px",color:"#111111",fontWeight:"600"}}>{disc.name}</div><div style={{fontSize:"11px",color:"#555555"}}>{disc.speed}/{disc.glide}/{disc.turn}/{disc.fade}</div></div></div>
                 <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px"}}>{stab.label}</span>
               </div>
@@ -1746,8 +1754,8 @@ function RoundScreen({ bag, settings }) {
             <div style={s.slabel}>Saved Courses</div>
             {courses.map(course=>(
               <div key={course.id} style={{...s.card,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}} onClick={()=>startRound(course)}>
-                <div><div style={{fontSize:"15px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#FFFFFF"}}>{course.name}</div><div style={{fontSize:"11px",color:"rgba(255,255,255,0.8)",marginTop:"3px"}}>{course.holes?.length||0} holes · {course.location||course.createdAt}</div></div>
-                <div style={{fontSize:"20px",color:"#FFFFFF"}}>▶</div>
+                <div><div style={{fontSize:"15px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#f6eeda"}}>{course.name}</div><div style={{fontSize:"11px",color:"rgba(255,255,255,0.8)",marginTop:"3px"}}>{course.holes?.length||0} holes · {course.location||course.createdAt}</div></div>
+                <div style={{fontSize:"20px",color:"#f6eeda"}}>▶</div>
               </div>
             ))}
           </div>
@@ -1783,13 +1791,13 @@ function DiscCard({disc,onDelete}) {
   const t=DISC_TYPES.find(t=>t.key===disc.type);
   const stab=getStability(disc.turn,disc.fade);
   return (
-    <div style={{background:"#FFFFFF",border:"1px solid #00A651",borderRadius:"14px",marginBottom:"12px",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,166,81,0.1)"}}>
+    <div style={{background:"#f6eeda",border:"1px solid #425037",borderRadius:"14px",marginBottom:"12px",overflow:"hidden",boxShadow:"0 1px 4px rgba(0,166,81,0.1)"}}>
       <div style={{padding:"16px",cursor:"pointer",display:"flex",alignItems:"center",gap:"12px"}} onClick={()=>setExp(!exp)}>
-        <div style={{width:"42px",height:"42px",background:"#E8F5EE",border:"1px solid #00A651",borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",flexShrink:0}}>{t?.icon}</div>
+        <div style={{width:"42px",height:"42px",background:"#E8F5EE",border:"1px solid #425037",borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"20px",flexShrink:0}}>{t?.icon}</div>
         <div style={{flex:1}}><div style={{fontSize:"15px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",color:"#111111"}}>{disc.name}</div><div style={{fontSize:"12px",color:"#555555",marginTop:"2px"}}>{disc.brand} · {disc.plastic||t?.label}</div></div>
         <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
           <span style={{fontSize:"10px",color:stab.color,background:`${stab.color}22`,border:`1px solid ${stab.color}44`,borderRadius:"6px",padding:"2px 8px",fontWeight:"600"}}>{stab.label}</span>
-          <div style={{color:"#00A651"}}>{exp?"▲":"▼"}</div>
+          <div style={{color:"#425037"}}>{exp?"▲":"▼"}</div>
         </div>
       </div>
       {exp&&(<div style={{padding:"0 16px 16px",borderTop:"1px solid #E0E0E0"}}><div style={{paddingTop:"16px"}}><FlightBar label="Speed" value={disc.speed} min={1} max={14}/><FlightBar label="Glide" value={disc.glide} min={1} max={7} color="#60BFFF"/><FlightBar label="Turn" value={disc.turn} min={-5} max={1} color={disc.turn<0?theme.warning:theme.accent}/><FlightBar label="Fade" value={disc.fade} min={0} max={5} color="#FF7A3D"/></div>{disc.notes&&<div style={{background:"#F0F0F0",borderRadius:"8px",padding:"10px 12px",fontSize:"12px",color:"#555555",marginTop:"8px"}}>{disc.notes}</div>}<button style={{...s.btnDanger,padding:"10px",marginTop:"12px"}} onClick={()=>onDelete(disc.id)}>Remove</button></div>)}
@@ -1852,10 +1860,10 @@ function BagScreen({bag,setBag}) {
   const byType=DISC_TYPES.map(t=>({...t,discs:bag.filter(d=>d.type===t.key)}));
   return (
     <div>
-      <div style={s.header}><GlowOrb top={-40} left={220} size={200} opacity={0.06}/><div style={s.htitle}>Equipment</div><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}><div style={s.hmain}>My Bag</div><div style={{fontSize:"28px",fontWeight:"700",color:"#00A651",fontFamily:"'DM Sans',sans-serif"}}>{bag.length}</div></div></div>
+      <div style={s.header}><GlowOrb top={-40} left={220} size={200} opacity={0.06}/><div style={s.htitle}>Equipment</div><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}><div style={s.hmain}>My Bag</div><div style={{fontSize:"28px",fontWeight:"700",color:"#425037",fontFamily:"'DM Sans',sans-serif"}}>{bag.length}</div></div></div>
       <div style={s.content}>
         {bag.length===0?(<div style={{...s.cardAccent,textAlign:"center",padding:"32px 20px"}}><div style={{fontSize:"48px",marginBottom:"12px"}}>🎒</div><div style={{fontSize:"16px",fontWeight:"600",fontFamily:"'DM Sans',sans-serif",marginBottom:"8px"}}>Your bag is empty</div><button style={s.btn} onClick={()=>setView("add")}>+ Add Your First Disc</button></div>):(
-          <>{<button style={{...s.btn,marginBottom:"20px"}} onClick={()=>setView("add")}>+ Add Disc</button>}{byType.map(type=>type.discs.length>0&&(<div key={type.key} style={{marginBottom:"8px"}}><div style={{fontSize:"10px",letterSpacing:"0.2em",color:"#007A3D",textTransform:"uppercase",marginBottom:"12px",fontWeight:"700",display:"flex",alignItems:"center",gap:"6px"}}><span>{type.icon}</span>{type.label}<span style={{color:"#00A651"}}>({type.discs.length})</span></div>{type.discs.map(disc=><DiscCard key={disc.id} disc={disc} onDelete={del}/>)}</div>))}</>
+          <>{<button style={{...s.btn,marginBottom:"20px"}} onClick={()=>setView("add")}>+ Add Disc</button>}{byType.map(type=>type.discs.length>0&&(<div key={type.key} style={{marginBottom:"8px"}}><div style={{fontSize:"10px",letterSpacing:"0.2em",color:"#2D3A26",textTransform:"uppercase",marginBottom:"12px",fontWeight:"700",display:"flex",alignItems:"center",gap:"6px"}}><span>{type.icon}</span>{type.label}<span style={{color:"#425037"}}>({type.discs.length})</span></div>{type.discs.map(disc=><DiscCard key={disc.id} disc={disc} onDelete={del}/>)}</div>))}</>
         )}
       </div>
     </div>
@@ -1870,9 +1878,9 @@ function HomeScreen({setTab,bag,settings}) {
       <div style={s.header}><GlowOrb top={-60} left={200} size={250} opacity={0.06}/><div style={s.htitle}>Chain Hound 🐕</div><div style={s.hmain}>Ready to play?</div></div>
       <div style={s.content}>
         {activeRound&&(<div style={{...s.cardAccent,marginBottom:"16px"}}><div style={s.slabel}>⚡ Active Round</div><div style={{fontSize:"15px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",marginBottom:"4px"}}>{activeRound.courseName}</div><div style={{fontSize:"12px",color:theme.textMuted,marginBottom:"12px"}}>Hole {activeRound.currentHole} in progress</div><button style={s.btn} onClick={()=>setTab("round")}>Resume →</button></div>)}
-        <div style={{...s.cardAccent,position:"relative",overflow:"hidden"}}><GlowOrb top={-40} left={-40} size={180} opacity={0.12}/><div style={s.slabel}>Quick Start</div><div style={{fontSize:"20px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",marginBottom:"8px",color:"#FFFFFF"}}>Start a Round</div><div style={{fontSize:"13px",color:"rgba(255,255,255,0.9)",marginBottom:"20px",lineHeight:1.6}}>One tap — instant caddy advice on every hole. 🐕</div><button style={s.btn} onClick={()=>setTab("round")}>🥏 Begin Round</button></div>
-        <div style={{background:"#00A651",border:"1px solid #007A3D",borderRadius:"16px",padding:"20px",marginBottom:"16px"}}><div style={{fontSize:"10px",letterSpacing:"0.2em",color:"rgba(255,255,255,0.85)",textTransform:"uppercase",marginBottom:"12px",fontWeight:"500"}}>My Bag</div><div style={{display:"flex",alignItems:"flex-end",gap:"16px",marginBottom:"16px"}}><div><div style={{fontSize:"48px",fontWeight:"700",color:theme.accent,fontFamily:"'DM Sans',sans-serif",lineHeight:1}}>{bag.length}</div><div style={{fontSize:"12px",color:theme.textMuted,marginTop:"4px"}}>{bag.length===1?"Disc":"Discs"} in bag</div></div></div><button style={{background:"rgba(255,255,255,0.2)",color:"#FFFFFF",border:"2px solid rgba(255,255,255,0.6)",borderRadius:"12px",padding:"12px 24px",fontSize:"13px",fontWeight:"700",cursor:"pointer",width:"100%",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}} onClick={()=>setTab("bag")}>{bag.length===0?"Add Your Discs":"Manage Bag"}</button></div>
-        <div style={s.card}><div style={s.slabel}>Player Profile</div><div style={{...s.row,borderBottom:`1px solid ${theme.border}`}}><span style={{fontSize:"12px",color:"rgba(255,255,255,0.85)"}}>Dominant Hand</span><span style={{fontSize:"13px",color:"#FFFFFF",fontWeight:"700"}}>{settings?.dominantHand==="left"?"Left (LHBH)":"Right (RHBH)"}</span></div><div style={{...s.row,borderBottom:"none"}}><span style={{fontSize:"12px",color:"rgba(255,255,255,0.85)"}}>Backhand fade direction</span><span style={{fontSize:"13px",color:"#FFFFFF",fontWeight:"600"}}>{settings?.dominantHand==="left"?"Right →":"Left ←"}</span></div></div>
+        <div style={{...s.cardAccent,position:"relative",overflow:"hidden"}}><GlowOrb top={-40} left={-40} size={180} opacity={0.12}/><div style={s.slabel}>Quick Start</div><div style={{fontSize:"20px",fontWeight:"700",fontFamily:"'DM Sans',sans-serif",marginBottom:"8px",color:"#f6eeda"}}>Start a Round</div><div style={{fontSize:"13px",color:"rgba(255,255,255,0.9)",marginBottom:"20px",lineHeight:1.6}}>One tap — instant caddy advice on every hole. 🐕</div><button style={s.btn} onClick={()=>setTab("round")}>🥏 Begin Round</button></div>
+        <div style={{background:"#425037",border:"1px solid #2D3A26",borderRadius:"16px",padding:"20px",marginBottom:"16px"}}><div style={{fontSize:"10px",letterSpacing:"0.2em",color:"rgba(255,255,255,0.85)",textTransform:"uppercase",marginBottom:"12px",fontWeight:"500"}}>My Bag</div><div style={{display:"flex",alignItems:"flex-end",gap:"16px",marginBottom:"16px"}}><div><div style={{fontSize:"48px",fontWeight:"700",color:theme.accent,fontFamily:"'DM Sans',sans-serif",lineHeight:1}}>{bag.length}</div><div style={{fontSize:"12px",color:theme.textMuted,marginTop:"4px"}}>{bag.length===1?"Disc":"Discs"} in bag</div></div></div><button style={{background:"rgba(255,255,255,0.2)",color:"#f6eeda",border:"2px solid rgba(255,255,255,0.6)",borderRadius:"12px",padding:"12px 24px",fontSize:"13px",fontWeight:"700",cursor:"pointer",width:"100%",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}} onClick={()=>setTab("bag")}>{bag.length===0?"Add Your Discs":"Manage Bag"}</button></div>
+        <div style={s.card}><div style={s.slabel}>Player Profile</div><div style={{...s.row,borderBottom:`1px solid ${theme.border}`}}><span style={{fontSize:"12px",color:"rgba(255,255,255,0.85)"}}>Dominant Hand</span><span style={{fontSize:"13px",color:"#f6eeda",fontWeight:"700"}}>{settings?.dominantHand==="left"?"Left (LHBH)":"Right (RHBH)"}</span></div><div style={{...s.row,borderBottom:"none"}}><span style={{fontSize:"12px",color:"rgba(255,255,255,0.85)"}}>Backhand fade direction</span><span style={{fontSize:"13px",color:"#f6eeda",fontWeight:"600"}}>{settings?.dominantHand==="left"?"Right →":"Left ←"}</span></div></div>
       </div>
     </div>
   );
@@ -1886,12 +1894,53 @@ function SettingsScreen({bag,setBag,settings,setSettings}) {
     <div>
       <div style={s.header}><div style={s.htitle}>App</div><div style={s.hmain}>Settings</div></div>
       <div style={s.content}>
-        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Player Profile</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div><div style={{fontSize:"13px",color:"#FFFFFF",fontWeight:"700"}}>Dominant Hand</div><div style={{fontSize:"11px",color:"rgba(255,255,255,0.8)",marginTop:"2px"}}>Affects all disc recommendations</div></div><div style={{display:"flex",gap:"8px"}}>{["right","left"].map(hand=>(<div key={hand} onClick={()=>updateSetting("dominantHand",hand)} style={{padding:"10px 16px",background:settings?.dominantHand===hand?"#005C2E":"#00C875",border:"1px solid #007A3D",borderRadius:"10px",cursor:"pointer",fontSize:"12px",fontWeight:"700",color:"#FFFFFF",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}}>{settings?.dominantHand===hand?"✓ ":""}{hand}</div>))}</div></div></div></div>
-        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Skill Level</div><div style={s.card}><div style={{display:"flex",gap:"8px"}}>{["beginner","intermediate","advanced"].map(level=>(<div key={level} onClick={()=>updateSetting("skillLevel",level)} style={{flex:1,padding:"12px 6px",textAlign:"center",background:settings?.skillLevel===level?"#005C2E":"#00C875",border:"1px solid #007A3D",borderRadius:"10px",cursor:"pointer",fontSize:"10px",fontWeight:"700",color:"#FFFFFF",fontFamily:"'DM Mono',monospace",textTransform:"uppercase",letterSpacing:"0.05em"}}>{settings?.skillLevel===level?"✓ ":""}{level}</div>))}</div></div></div>
-        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Driver Distance</div><div style={s.card}><div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>{[{key:"under200",label:"Under 200ft"},{key:"200to300",label:"200–300ft"},{key:"300to400",label:"300–400ft"},{key:"over400",label:"400ft+"}].map(opt=>(<div key={opt.key} onClick={()=>updateSetting("driverDistance",opt.key)} style={{flex:"1 0 calc(50% - 4px)",padding:"12px 8px",textAlign:"center",background:settings?.driverDistance===opt.key?"#005C2E":"#00C875",border:"1px solid #007A3D",borderRadius:"10px",cursor:"pointer",fontSize:"11px",color:"#FFFFFF",fontWeight:"600",fontFamily:"'DM Mono',monospace"}}>{settings?.driverDistance===opt.key?"✓ ":""}{opt.label}</div>))}</div></div></div>
-        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Outdoor Mode</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div><div style={{fontSize:"13px",color:"#FFFFFF",fontWeight:"700"}}>High Contrast</div><div style={{fontSize:"11px",color:"rgba(255,255,255,0.8)",marginTop:"2px"}}>Maximum contrast for sunlight.</div></div><div onClick={()=>updateSetting("outdoorMode",!settings.outdoorMode)} style={{width:"52px",height:"28px",borderRadius:"14px",cursor:"pointer",background:settings.outdoorMode?theme.accent:theme.surfaceAlt,border:`1px solid ${settings.outdoorMode?theme.accentDim:theme.border}`,position:"relative",transition:"all 0.2s",flexShrink:0}}><div style={{position:"absolute",top:"3px",left:settings.outdoorMode?"26px":"3px",width:"20px",height:"20px",borderRadius:"50%",background:settings.outdoorMode?theme.bg:"#555",transition:"left 0.2s"}}/></div></div></div></div>
+        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Player Profile</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div><div style={{fontSize:"13px",color:"#f6eeda",fontWeight:"700"}}>Dominant Hand</div><div style={{fontSize:"11px",color:"rgba(255,255,255,0.8)",marginTop:"2px"}}>Affects all disc recommendations</div></div><div style={{display:"flex",gap:"8px"}}>{["right","left"].map(hand=>(<div key={hand} onClick={()=>updateSetting("dominantHand",hand)} style={{padding:"10px 16px",background:settings?.dominantHand===hand?"#1E2A1A":"#4A5E3A",border:"1px solid #2D3A26",borderRadius:"10px",cursor:"pointer",fontSize:"12px",fontWeight:"700",color:"#f6eeda",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}}>{settings?.dominantHand===hand?"✓ ":""}{hand}</div>))}</div></div></div></div>
+        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Skill Level</div><div style={s.card}><div style={{display:"flex",gap:"8px"}}>{["beginner","intermediate","advanced"].map(level=>(<div key={level} onClick={()=>updateSetting("skillLevel",level)} style={{flex:1,padding:"12px 6px",textAlign:"center",background:settings?.skillLevel===level?"#1E2A1A":"#4A5E3A",border:"1px solid #2D3A26",borderRadius:"10px",cursor:"pointer",fontSize:"10px",fontWeight:"700",color:"#f6eeda",fontFamily:"'DM Mono',monospace",textTransform:"uppercase",letterSpacing:"0.05em"}}>{settings?.skillLevel===level?"✓ ":""}{level}</div>))}</div></div></div>
+        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Driver Distance</div><div style={s.card}><div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>{[{key:"under200",label:"Under 200ft"},{key:"200to300",label:"200–300ft"},{key:"300to400",label:"300–400ft"},{key:"over400",label:"400ft+"}].map(opt=>(<div key={opt.key} onClick={()=>updateSetting("driverDistance",opt.key)} style={{flex:"1 0 calc(50% - 4px)",padding:"12px 8px",textAlign:"center",background:settings?.driverDistance===opt.key?"#1E2A1A":"#4A5E3A",border:"1px solid #2D3A26",borderRadius:"10px",cursor:"pointer",fontSize:"11px",color:"#f6eeda",fontWeight:"600",fontFamily:"'DM Mono',monospace"}}>{settings?.driverDistance===opt.key?"✓ ":""}{opt.label}</div>))}</div></div></div>
+        <div style={{marginBottom:"24px"}}><div style={s.slabel}>Outdoor Mode</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div><div style={{fontSize:"13px",color:"#f6eeda",fontWeight:"700"}}>High Contrast</div><div style={{fontSize:"11px",color:"rgba(255,255,255,0.8)",marginTop:"2px"}}>Maximum contrast for sunlight.</div></div><div onClick={()=>updateSetting("outdoorMode",!settings.outdoorMode)} style={{width:"52px",height:"28px",borderRadius:"14px",cursor:"pointer",background:settings.outdoorMode?theme.accent:theme.surfaceAlt,border:`1px solid ${settings.outdoorMode?theme.accentDim:theme.border}`,position:"relative",transition:"all 0.2s",flexShrink:0}}><div style={{position:"absolute",top:"3px",left:settings.outdoorMode?"26px":"3px",width:"20px",height:"20px",borderRadius:"50%",background:settings.outdoorMode?theme.bg:"#555",transition:"left 0.2s"}}/></div></div></div></div>
         <div style={{marginBottom:"24px"}}><div style={s.slabel}>Data</div><div style={s.card}><div style={{...s.row,borderBottom:"none"}}><div style={{display:"flex",alignItems:"center",gap:"10px"}}><span>🎒</span><span style={{fontSize:"12px",color:theme.textMuted}}>Discs in bag</span></div><span style={{fontSize:"13px",color:theme.accent,fontWeight:"700"}}>{bag.length}</span></div></div><button style={s.btnDanger} onClick={clearAll}>🗑️ Clear All Data</button></div>
         <div style={{...s.card,textAlign:"center"}}><div style={{fontSize:"11px",color:theme.textDim,lineHeight:1.8}}>Chain Hound 🐕⛓️<br/>Week 5 · June 2026<br/>Light theme · proxy · rec fix · wind before caddy</div></div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Ace the Caddie ───────────────────────────────────────────────────────────
+function AceCaddie({ message, loading, visible }) {
+  if (!visible) return null;
+  return (
+    <div style={{ display:"flex", alignItems:"flex-end", gap:"10px", marginBottom:"12px" }}>
+      {/* Ace avatar placeholder */}
+      <div style={{
+        width:"52px", height:"52px", borderRadius:"50%",
+        background:"#425037", border:"3px solid #f6eeda",
+        display:"flex", alignItems:"center", justifyContent:"center",
+        fontSize:"26px", flexShrink:0, boxShadow:"0 2px 8px rgba(0,0,0,0.2)",
+      }}>
+        🐕
+      </div>
+      {/* Speech bubble */}
+      <div style={{
+        flex:1, background:"#425037", border:"1px solid #2D3A26",
+        borderRadius:"16px 16px 16px 4px", padding:"12px 14px",
+        position:"relative",
+      }}>
+        <div style={{ fontSize:"9px", letterSpacing:"0.15em", color:"rgba(246,238,218,0.7)", textTransform:"uppercase", marginBottom:"4px", fontWeight:"600" }}>
+          ACE · YOUR CADDIE
+        </div>
+        {loading ? (
+          <div style={{ display:"flex", gap:"4px", alignItems:"center", padding:"4px 0" }}>
+            {[0,1,2].map(i => (
+              <div key={i} style={{ width:"7px", height:"7px", borderRadius:"50%", background:"#f6eeda", opacity:0.6,
+                animation:`bounce 1s ease-in-out ${i*0.2}s infinite` }} />
+            ))}
+            <style>{`@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}`}</style>
+          </div>
+        ) : (
+          <div style={{ fontSize:"13px", color:"#f6eeda", lineHeight:1.5 }}>
+            {message || "Set wind conditions, then tap the button below for my recommendation!"}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1913,16 +1962,16 @@ export default function App() {
   const t = getTheme(settings.outdoorMode);
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;600;700&display=swap');*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}body{background:#FFFFFF;}::-webkit-scrollbar{width:0;}input::placeholder{color:${t.textDim};}select option{background:${t.surface};}`}</style>
-      <div style={{...s.app,background:"#FFFFFF",color:"#111111",fontFamily:"'DM Mono','Courier New',monospace"}}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@400;600;700&display=swap');*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}body{background:#f6eeda;}::-webkit-scrollbar{width:0;}input::placeholder{color:${t.textDim};}select option{background:${t.surface};}`}</style>
+      <div style={{...s.app,background:"#f6eeda",color:"#111111",fontFamily:"'DM Mono','Courier New',monospace"}}>
         <div style={{flex:1,overflowY:"auto"}}>
           {tab==="home"&&<HomeScreen setTab={setTab} bag={bag} settings={settings}/>}
           {tab==="bag"&&<BagScreen bag={bag} setBag={setBag}/>}
           {tab==="round"&&<RoundScreen bag={bag} settings={settings}/>}
           {tab==="settings"&&<SettingsScreen bag={bag} setBag={setBag} settings={settings} setSettings={setSettings}/>}
         </div>
-        <div style={{...s.nav,background:"#FFFFFF",borderTop:"2px solid #00A651"}}>
-          {navItems.map(item=>{const active=tab===item.key;return(<div key={item.key} style={s.navItem} onClick={()=>setTab(item.key)}><div style={{fontSize:"22px",lineHeight:1,filter:active?"none":"grayscale(1) opacity(0.4)",transform:active?"scale(1.15)":"scale(1)",transition:"all 0.2s"}}>{item.icon}</div><div style={{fontSize:"10px",letterSpacing:"0.1em",textTransform:"uppercase",fontWeight:"500",color:active?"#00A651":"#999999"}}>{item.label}</div></div>);})}
+        <div style={{...s.nav,background:"#f6eeda",borderTop:"2px solid #425037"}}>
+          {navItems.map(item=>{const active=tab===item.key;return(<div key={item.key} style={s.navItem} onClick={()=>setTab(item.key)}><div style={{fontSize:"22px",lineHeight:1,filter:active?"none":"grayscale(1) opacity(0.4)",transform:active?"scale(1.15)":"scale(1)",transition:"all 0.2s"}}>{item.icon}</div><div style={{fontSize:"10px",letterSpacing:"0.1em",textTransform:"uppercase",fontWeight:"500",color:active?"#425037":"#999999"}}>{item.label}</div></div>);})}
         </div>
       </div>
     </>
